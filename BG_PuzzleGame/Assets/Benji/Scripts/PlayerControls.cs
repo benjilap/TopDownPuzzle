@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour {
 
+    public float playerSpeed=1;
+
     Vector3 xAxis;
     Vector3 yAxis;
 
@@ -16,44 +18,31 @@ public class PlayerControls : MonoBehaviour {
 	
 	void Update () {
         UpdatePlayerAxis();
+        PlayerMovement();
 
 	}
 
     void UpdatePlayerAxis()
     {
-        
-        if ((3*Mathf.PI)/2 <= myPivotCamera.transform.eulerAngles.y && myPivotCamera.transform.eulerAngles.y < 2*Mathf.PI )
-        {
-            xAxis = new Vector3(Mathf.Cos(myPivotCamera.transform.rotation.y), transform.position.y, -Mathf.Sin(myPivotCamera.transform.rotation.y));
-            yAxis = new Vector3(Mathf.Cos(myPivotCamera.transform.rotation.y + (Mathf.PI / 2)), transform.position.y, -Mathf.Sin(myPivotCamera.transform.rotation.y + (Mathf.PI / 2)));
-            Debug.Log("4");
-        }else
-        if (Mathf.PI <= myPivotCamera.transform.eulerAngles.y && myPivotCamera.transform.eulerAngles.y < (3*Mathf.PI)/2 )
-        {
-            xAxis = new Vector3(-Mathf.Cos(myPivotCamera.transform.rotation.y), transform.position.y, -Mathf.Sin(myPivotCamera.transform.rotation.y));
-            yAxis = new Vector3(-Mathf.Cos(myPivotCamera.transform.rotation.y + (Mathf.PI / 2)), transform.position.y, -Mathf.Sin(myPivotCamera.transform.rotation.y + (Mathf.PI / 2)));
-            Debug.Log("3");
-        }else
-        if (Mathf.PI/2 <= myPivotCamera.transform.eulerAngles.y && myPivotCamera.transform.eulerAngles.y < Mathf.PI)
-        {
-            xAxis = new Vector3(-Mathf.Cos(myPivotCamera.transform.rotation.y), transform.position.y, Mathf.Sin(myPivotCamera.transform.rotation.y));
-            yAxis = new Vector3(-Mathf.Cos(myPivotCamera.transform.rotation.y + (Mathf.PI / 2)), transform.position.y, Mathf.Sin(myPivotCamera.transform.rotation.y + (Mathf.PI / 2)));
-            Debug.Log("2");
-        }else
-        if (Mathf.PI/2 <= myPivotCamera.transform.eulerAngles.y && myPivotCamera.transform.eulerAngles.y < 2 * Mathf.PI)
-        {
-        
-            xAxis = new Vector3(Mathf.Cos(myPivotCamera.transform.rotation.y), transform.position.y, Mathf.Sin(myPivotCamera.transform.rotation.y));
-            yAxis = new Vector3(Mathf.Cos(myPivotCamera.transform.rotation.y + (Mathf.PI / 2)), transform.position.y, Mathf.Sin(myPivotCamera.transform.rotation.y + (Mathf.PI / 2)));
-            Debug.Log("1");
-        }
-        Debug.Log(myPivotCamera.transform.eulerAngles.y);
-        Debug.Log(Mathf.Cos(Mathf.PI));
 
+        xAxis = new Vector3((Mathf.Cos(myPivotCamera.transform.eulerAngles.y * Mathf.Deg2Rad)), 0, (-Mathf.Sin(myPivotCamera.transform.eulerAngles.y * Mathf.Deg2Rad)));
+        yAxis = new Vector3((-Mathf.Cos((myPivotCamera.transform.eulerAngles.y+90) * Mathf.Deg2Rad )), 0, (Mathf.Sin((myPivotCamera.transform.eulerAngles.y+90) * Mathf.Deg2Rad )));
 
-        Debug.DrawLine(transform.position, xAxis, Color.red);
-        Debug.DrawLine(transform.position, yAxis, Color.blue);
+        Debug.DrawLine(transform.position, transform.position+xAxis, Color.red);
+        Debug.DrawLine(transform.position, transform.position+yAxis, Color.blue);
     }
+
+    void PlayerMovement()
+    {
+        Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
+        if(Input.GetAxis("Horizontal")!=0|| Input.GetAxis("Vertical") != 0)
+        {
+            this.GetComponent<Rigidbody>().velocity = gravity+((xAxis * Input.GetAxis("Horizontal"))+ (yAxis * Input.GetAxis("Vertical")))*playerSpeed;
+
+        }
+
+    }
+
 
 
 }

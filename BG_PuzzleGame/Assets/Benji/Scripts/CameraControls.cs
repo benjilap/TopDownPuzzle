@@ -51,14 +51,14 @@ public class CameraControls : MonoBehaviour {
         RotateCam();
         CameraZoom();
 
-        if (Vector3.Distance(transform.position, currentTarget.transform.position) > 0.01f)
+        if (Vector3.Distance(transform.position, currentTarget.transform.position) > 0.001f)
         {
             CameraLerp();
         }
         else
         {
             startMove = false;
-            PlayerFocus(currentTarget.transform.position);
+            
 
         }
     }
@@ -93,9 +93,9 @@ public class CameraControls : MonoBehaviour {
         travelTime = (Time.time - startTime);
 
 
-        {
-            transform.position = Vector3.Lerp(transform.position, currentTarget.transform.position, transitCurve.Evaluate(travelTime));
-        }
+        
+        transform.position = Vector3.Lerp(transform.position, currentTarget.transform.position, transitCurve.Evaluate(Time.time));
+        
 
     }
 
