@@ -5,98 +5,80 @@ using UnityEngine;
 public class CameraControls : MonoBehaviour {
 
     //CamAnim
-    public AnimationCurve transitCurve;
 
     //PlayerFocus
     GameObject UiPlayer;
     GameObject currentTarget;
 
-
-    //CamLerp
-    bool startMove;
-    float startTime;
-    float travelTime;
-
     //CamZoom
     float camZoom = 1;
     [SerializeField]
     float minZoom = 1f;
-
     [SerializeField]
     float maxZoom = 10f;
 
+    //CamParam
+    float cameraSmooth = 0.125f;
     Vector3 initCamPos;
+
+
+    [SerializeField]
+    float verticalAngleOffset = 15;
+    float minVerticalAngle;
+    float maxVerticalAngle;
 
     //CamParam
     [SerializeField]
-    float camSpeed;
-
+    float camSpeedX=1;
+    float camSpeedY = 1;
+        [SerializeField]
+    float zoomSpeed=1;
     [SerializeField]
-    float zoomSpeed;
+    float zoomOffset=0.1f;
+
 
 
     void Start()
     {
         //UiPlayer = GameObject.FindObjectOfType<Canvas>().gameObject;
         currentTarget = GameObject.FindGameObjectWithTag("Player");
-
-        PlayerFocus(currentTarget.transform.position);
         initCamPos = this.transform.GetChild(0).localPosition;
-
+        minVerticalAngle = this.transform.eulerAngles.x - verticalAngleOffset;
+        maxVerticalAngle = this.transform.eulerAngles.x + verticalAngleOffset;
+        camSpeedY = camSpeedX * 0.5f;
+        
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         RotateCam();
         CameraZoom();
+        CameraLerp();
 
-        if (Vector3.Distance(transform.position, currentTarget.transform.position) > 0.001f)
-        {
-            CameraLerp();
-        }
-        else
-        {
-            startMove = false;
-            
-
-        }
     }
 
-    public void PlayerFocus(Vector3 pos)
-    {
-
-        {
-            this.transform.position = pos;
-        }
-    }
 
     void RotateCam()
     {
 
-            if (Input.GetKey(KeyCode.Mouse2))
-            {
-
-                transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y + Input.GetAxis("Mouse X") * camSpeed, 0);
-
-            }
-
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            float camXInput = transform.eulerAngles.x + (Input.GetAxis("Mouse Y") * camSpeedY);
+            float camXRot = Mathf.Clamp(camXInput, minVerticalAngle, maxVerticalAngle);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(camXRot, transform.eulerAngles.y + (Input.GetAxis("Mouse X") * camSpeedX), 0), cameraSmooth);
+        }
+        else if (Input.GetAxis("ActiveZoom") == 0)
+        {
+            float camXInput = transform.eulerAngles.x + (Input.GetAxis("RightStickY") * camSpeedY);
+            float camXRot = Mathf.Clamp(camXInput, minVerticalAngle, maxVerticalAngle);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(camXRot, transform.eulerAngles.y + (Input.GetAxis("RightStickX") * camSpeedX), 0), cameraSmooth);
+        }
     }
 
     void CameraLerp()
     {
-        if (!startMove)
-        {
-            startTime = Time.time;
-            startMove = true;
-        }
-        travelTime = (Time.time - startTime);
-
-
-        
-        transform.position = Vector3.Lerp(transform.position, currentTarget.transform.position, transitCurve.Evaluate(Time.time));
-        
-
+        transform.position = Vector3.Lerp(transform.position, currentTarget.transform.position, cameraSmooth);
     }
 
     void CameraZoom()
@@ -106,18 +88,34 @@ public class CameraControls : MonoBehaviour {
 
         if (camZoom < maxZoom)
         {
+            if (Input.GetAxis("ActiveZoom") != 0)
+            {
+                if (Input.GetAxis("RightStickY") < 0)
+                {
+                    camZoom += zoomOffset * zoomSpeed;
+                }
+            }
+            else
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                camZoom += 0.5f*zoomSpeed;
+                camZoom += zoomOffset*zoomSpeed;
             }
         }
 
 
         if (camZoom > minZoom)
         {
+            if (Input.GetAxis("ActiveZoom") != 0)
+            {
+                if (Input.GetAxis("RightStickY") > 0)
+                {
+                    camZoom -= zoomOffset * zoomSpeed;
+                }
+            }
+            else
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
-                camZoom -= 0.5f*zoomSpeed;
+                camZoom -= zoomOffset*zoomSpeed;
             }
         }
     }
