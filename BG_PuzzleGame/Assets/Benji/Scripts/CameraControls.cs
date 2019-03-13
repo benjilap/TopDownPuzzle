@@ -52,12 +52,21 @@ public class CameraControls : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate()
     {
+        CheckTarget();
         RotateCam();
         CameraZoom();
         CameraLerp();
 
     }
 
+    void CheckTarget()
+    {
+        if (currentTarget == null)
+        {
+            currentTarget = GameObject.FindGameObjectWithTag("Player");
+
+        }
+    }
 
     void RotateCam()
     {
@@ -78,46 +87,38 @@ public class CameraControls : MonoBehaviour {
 
     void CameraLerp()
     {
-        transform.position = Vector3.Lerp(transform.position, currentTarget.transform.position, cameraSmooth);
+        if (currentTarget != null)
+        {
+            transform.position = Vector3.Lerp(transform.position, currentTarget.transform.position, cameraSmooth);
+        }
     }
 
     void CameraZoom()
     {
-        transform.GetChild(0).localPosition = initCamPos * camZoom;
-
-
-        if (camZoom < maxZoom)
+        if (Input.GetAxis("ActiveZoom") != 0)
         {
-            if (Input.GetAxis("ActiveZoom") != 0)
+            if (Input.GetAxis("RightStickY") < 0)
             {
-                if (Input.GetAxis("RightStickY") < 0)
-                {
-                    camZoom += zoomOffset * zoomSpeed;
-                }
+                camZoom += zoomOffset * zoomSpeed;
             }
-            else
-            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            else if (Input.GetAxis("RightStickY") > 0)
             {
-                camZoom += zoomOffset*zoomSpeed;
+                camZoom -= zoomOffset * zoomSpeed;
             }
         }
-
-
-        if (camZoom > minZoom)
+        else
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            if (Input.GetAxis("ActiveZoom") != 0)
-            {
-                if (Input.GetAxis("RightStickY") > 0)
-                {
-                    camZoom -= zoomOffset * zoomSpeed;
-                }
-            }
-            else
-            if (Input.GetAxis("Mouse ScrollWheel") > 0)
-            {
-                camZoom -= zoomOffset*zoomSpeed;
-            }
+            camZoom -= zoomOffset * zoomSpeed;
         }
+        else
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            camZoom += zoomOffset * zoomSpeed;
+        }
+        transform.GetChild(0).localPosition = initCamPos * Mathf.Clamp(camZoom, minZoom, maxZoom);
+        
+        
     }
 
 

@@ -15,8 +15,10 @@ public class PlayerControls : MonoBehaviour {
     bool startCheckJump;
     float saveTimeCheck;
     float timerCheck;
-    float timeToReset = 0.4f;
+    float timeToReset = 0.2f;
 
+    Vector3 tempPlayerDir;
+    Vector3 playerDir;
     Vector3 xAxis;
     Vector3 yAxis;
 
@@ -27,7 +29,7 @@ public class PlayerControls : MonoBehaviour {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
 	}
 	
-	void Update () {
+	void FixedUpdate () {
         UpdatePlayerAxis();
         PlayerMovement();
         PlayerJump();
@@ -46,49 +48,65 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerMovement()
     {
+        playerDir = ((xAxis * Input.GetAxis("Horizontal")) + (yAxis * Input.GetAxis("Vertical"))).normalized;
         Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
-        if(Input.GetAxis("Horizontal")!=0|| Input.GetAxis("Vertical") != 0)
-        {
-            this.GetComponent<Rigidbody>().velocity = gravity+(((xAxis * Input.GetAxis("Horizontal"))+ (yAxis * Input.GetAxis("Vertical")))).normalized*playerSpeed;
 
+        RaycastHit hit;
+        Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), playerDir);
+        if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDir, out hit,playerDir.magnitude/2))
+        {
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+            {
+
+                this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
+                tempPlayerDir = playerDir;
+            }
         }
 
+
+        this.transform.rotation = Quaternion.LookRotation(tempPlayerDir);
     }
 
     void PlayerJump()
     {
-        if (this.GetComponent<Rigidbody>().velocity.y > -2 && this.GetComponent<Rigidbody>().velocity.y < 2)
+        if (Input.GetButtonDown("Jump") && canJump)
         {
-            if (Input.GetButtonDown("Jump") && canJump)
-            {
 
-                canJump = false;
-                this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
+            canJump = false;
+            this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
 
-            }
-            else if (!canJump)
+        }
+        else if (!canJump)
+        {
+            if (this.GetComponent<Rigidbody>().velocity.y > -1f && this.GetComponent<Rigidbody>().velocity.y < 1f)
             {
+                float tempPlayerHeight =0;
 
                 if (!startCheckJump)
                 {
+                    tempPlayerHeight = this.GetComponent<Rigidbody>().velocity.y;
                     startCheckJump = true;
                     saveTimeCheck = Time.time;
                 }
                 timerCheck = Time.time - saveTimeCheck;
-                if (timerCheck >= timeToReset)
+                if (timerCheck >= timeToReset* this.GetComponent<Rigidbody>().velocity.y+timeToReset)
                 {
-                    startCheckJump = false;
-                    canJump = true;
+                    if (tempPlayerHeight == this.GetComponent<Rigidbody>().velocity.y)
+                    {
+                        startCheckJump = false;
+                        canJump = true;
+
+                    }
+                    else
+                    if (startCheckJump)
+                    {
+                        startCheckJump = false;
+                    }
                 }
             }
-        }
-        else
-        {
-            startCheckJump = false;
 
         }
     }
-
 
 
 }
