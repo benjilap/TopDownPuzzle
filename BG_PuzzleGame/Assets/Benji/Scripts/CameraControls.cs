@@ -52,12 +52,21 @@ public class CameraControls : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate()
     {
+        CheckTarget();
         RotateCam();
         CameraZoom();
         CameraLerp();
 
     }
 
+    void CheckTarget()
+    {
+        if (currentTarget == null)
+        {
+            currentTarget = GameObject.FindGameObjectWithTag("Player");
+
+        }
+    }
 
     void RotateCam()
     {
@@ -78,7 +87,10 @@ public class CameraControls : MonoBehaviour {
 
     void CameraLerp()
     {
-        transform.position = Vector3.Lerp(transform.position, currentTarget.transform.position, cameraSmooth);
+        if (currentTarget != null)
+        {
+            transform.position = Vector3.Lerp(transform.position, currentTarget.transform.position, cameraSmooth);
+        }
     }
 
     void CameraZoom()
@@ -104,7 +116,6 @@ public class CameraControls : MonoBehaviour {
         {
             camZoom += zoomOffset * zoomSpeed;
         }
-
         transform.GetChild(0).localPosition = initCamPos * Mathf.Clamp(camZoom, minZoom, maxZoom);
         
         

@@ -52,8 +52,8 @@ public class PlayerControls : MonoBehaviour {
         Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
 
         RaycastHit hit;
-        Debug.DrawRay(this.transform.position + new Vector3(0, -0.5f, 0), playerDir);
-        if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.5f, 0), playerDir, out hit,playerDir.magnitude/2))
+        Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), playerDir);
+        if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDir, out hit,playerDir.magnitude/2))
         {
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
             {
@@ -69,46 +69,44 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerJump()
     {
-        if (this.GetComponent<Rigidbody>().velocity.y > -1f && this.GetComponent<Rigidbody>().velocity.y < 1f)
+        if (Input.GetButtonDown("Jump") && canJump)
         {
-            float tempPlayerHeight = this.GetComponent<Rigidbody>().velocity.y;
-            if (Input.GetButtonDown("Jump") && canJump)
-            {
 
-                canJump = false;
-                this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
+            canJump = false;
+            this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
 
-            }
-            else if (!canJump)
+        }
+        else if (!canJump)
+        {
+            if (this.GetComponent<Rigidbody>().velocity.y > -1f && this.GetComponent<Rigidbody>().velocity.y < 1f)
             {
-                if (tempPlayerHeight == this.GetComponent<Rigidbody>().velocity.y)
+                float tempPlayerHeight =0;
+
+                if (!startCheckJump)
                 {
-                    if (!startCheckJump)
-                    {
-                        startCheckJump = true;
-                        saveTimeCheck = Time.time;
-                    }
-                    timerCheck = Time.time - saveTimeCheck;
-                    if (timerCheck >= timeToReset)
+                    tempPlayerHeight = this.GetComponent<Rigidbody>().velocity.y;
+                    startCheckJump = true;
+                    saveTimeCheck = Time.time;
+                }
+                timerCheck = Time.time - saveTimeCheck;
+                if (timerCheck >= timeToReset* this.GetComponent<Rigidbody>().velocity.y+timeToReset)
+                {
+                    if (tempPlayerHeight == this.GetComponent<Rigidbody>().velocity.y)
                     {
                         startCheckJump = false;
                         canJump = true;
+
+                    }
+                    else
+                    if (startCheckJump)
+                    {
+                        startCheckJump = false;
                     }
                 }
-                else
-                if (startCheckJump)
-                {
-                    startCheckJump = false;
-                }
             }
-        }
-        else
-        {
-            startCheckJump = false;
 
         }
     }
-
 
 
 }
