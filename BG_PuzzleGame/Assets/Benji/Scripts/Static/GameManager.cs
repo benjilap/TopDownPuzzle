@@ -4,5 +4,7 @@ using UnityEngine;
 
 public static class GameManager {
 
-    public static string levelName;
+    public static int startLevelNum = 1;
+    public static int levelNum;
+    public static int nextLevelNum;
 }
