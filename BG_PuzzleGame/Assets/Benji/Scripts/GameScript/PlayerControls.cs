@@ -10,6 +10,8 @@ public class PlayerControls : MonoBehaviour {
     float playerSpeed=1;
 
     bool canJump;
+    [HideInInspector]
+    public bool canMove = true;
 
     //CheckJumpTimer
     bool startCheckJump;
@@ -48,21 +50,33 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerMovement()
     {
-        playerDir = ((xAxis * Input.GetAxis("Horizontal")) + (yAxis * Input.GetAxis("Vertical"))).normalized;
-        Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
-
-        RaycastHit hit;
-        Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), tempPlayerDir);
-        Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40));
-        Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, -40));
-
-        if (!canJump)
+        if (canMove)
         {
-            if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), tempPlayerDir, out hit, tempPlayerDir.magnitude )&&
-                !Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40), out hit, tempPlayerDir.magnitude)&&
-                !Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, - 40), out hit, tempPlayerDir.magnitude))
-            {
+            playerDir = ((xAxis * Input.GetAxis("Horizontal")) + (yAxis * Input.GetAxis("Vertical"))).normalized;
+            Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
 
+            RaycastHit hit;
+            Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), playerDir);
+            //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40));
+            //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, -40));
+
+            if (!canJump)
+            {
+                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDir, out hit, tempPlayerDir.magnitude))
+                //&& !Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40), out hit, tempPlayerDir.magnitude)
+                //&&!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, - 40), out hit, tempPlayerDir.magnitude))
+                {
+
+                    if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+                    {
+
+                        this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
+                        tempPlayerDir = playerDir;
+                    }
+                }
+            }
+            else
+            {
                 if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
                 {
 
@@ -70,19 +84,10 @@ public class PlayerControls : MonoBehaviour {
                     tempPlayerDir = playerDir;
                 }
             }
+
+
+            this.transform.rotation = Quaternion.LookRotation(tempPlayerDir);
         }
-        else
-        {
-            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-            {
-
-                this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
-                tempPlayerDir = playerDir;
-            }
-        }
-
-
-        this.transform.rotation = Quaternion.LookRotation(tempPlayerDir);
     }
 
     void PlayerJump()
@@ -129,15 +134,23 @@ public class PlayerControls : MonoBehaviour {
     Vector3 UpdateVecWallDetect(Vector3 originVector, float angle)
     {
         Vector3 myNewDir = Vector3.zero;
-        float vectorAngle = Vector3.Angle(Vector3.right, originVector) + angle;
-        if (this.transform.eulerAngles.y > 90 || this.transform.eulerAngles.y < -90)
+        float vectorAngle = angle;
+        float initVectorAngle = Vector3.Angle(Vector3.right, originVector);
+        if (initVectorAngle < 0)
         {
-        myNewDir = new Vector3((Mathf.Cos(vectorAngle * Mathf.Deg2Rad)), 0, (Mathf.Sin(vectorAngle * Mathf.Deg2Rad)));
+            initVectorAngle = initVectorAngle * -1 + 180;
         }
-        else //if (this.transform.eulerAngles.y < 90 || this.transform.eulerAngles.y > -90)
-        {
-        myNewDir = new Vector3((Mathf.Cos((vectorAngle) * Mathf.Deg2Rad)), 0, (Mathf.Sin((vectorAngle) * Mathf.Deg2Rad)));
-        }
+        vectorAngle = initVectorAngle + angle;
+
+
+
+        myNewDir = new Vector3((Mathf.Cos(vectorAngle * Mathf.Deg2Rad)) , 0, (Mathf.Sin(vectorAngle * Mathf.Deg2Rad)) );
+
+
+
+
+        Debug.Log(myNewDir);
+
         return myNewDir;
     }
 }

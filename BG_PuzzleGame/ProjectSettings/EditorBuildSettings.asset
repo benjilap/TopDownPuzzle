@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Resources/Levels/Level1.unity
+    path: Assets/Benji/Scenes/MenuTest.unity
+    guid: 5c1bc57cb8b88ad49b71659f64a59383
+  - enabled: 1
+    path: Assets/Benji/Scenes/Levels/Level1.unity
     guid: b603d24c4bd56254bbe3af3034809809
   - enabled: 1
-    path: Assets/Resources/Levels/Level2.unity
+    path: Assets/Benji/Scenes/Levels/Level2.unity
     guid: caa992364da83ed49912e5282d151a6a
   m_configObjects: {}

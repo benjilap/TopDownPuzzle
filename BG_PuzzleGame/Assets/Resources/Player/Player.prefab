@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 136723480276161064}
   m_Layer: 0
   m_Name: CharacterMesh
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -229,6 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 8
   playerSpeed: 3
+  canMove: 1
 --- !u!136 &136723480276161064
 CapsuleCollider:
   m_ObjectHideFlags: 1
