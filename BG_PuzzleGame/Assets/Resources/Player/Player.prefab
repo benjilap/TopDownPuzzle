@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091fba7e59da0864e84674889b6be22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 8
+  jumpForce: 12
   playerSpeed: 3
   canMove: 1
   playerMovement: {x: 0, y: 0, z: 0}

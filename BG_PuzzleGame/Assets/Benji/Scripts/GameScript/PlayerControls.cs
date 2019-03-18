@@ -9,7 +9,7 @@ public class PlayerControls : MonoBehaviour {
     [SerializeField]
     float playerSpeed=1;
 
-    bool canJump;
+    bool canJump = true;
     [HideInInspector]
     public bool canMove = true;
 
@@ -67,37 +67,31 @@ public class PlayerControls : MonoBehaviour {
             Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), playerDir);
             //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40));
             //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, -40));
-
-            if (!canJump)
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
             {
-                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), tempPlayerDir, out hit, tempPlayerDir.magnitude))
-                //&& !Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40), out hit, tempPlayerDir.magnitude)
-                //&&!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, - 40), out hit, tempPlayerDir.magnitude))
+                if (!canJump)
                 {
-
-                    if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+                    if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDir, out hit, tempPlayerDir.magnitude))
+                    //&& !Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40), out hit, tempPlayerDir.magnitude)
+                    //&&!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, - 40), out hit, tempPlayerDir.magnitude))
                     {
-
                         this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
                         tempPlayerDir = playerDir;
                         playerMovement = tempPlayerDir;
+
                     }
                 }
-            }
-            else
-            {
-                if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+                else
                 {
-
                     this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
                     tempPlayerDir = playerDir;
                     playerMovement = tempPlayerDir;
 
                 }
+
+                this.transform.rotation = Quaternion.LookRotation(tempPlayerDir);
             }
 
-
-            this.transform.rotation = Quaternion.LookRotation(tempPlayerDir);
         }
     }
 
@@ -115,14 +109,17 @@ public class PlayerControls : MonoBehaviour {
         else if (!canJump)
         {
             RaycastHit jumpDetect;
+            RaycastHit wallDetect;
             if (Physics.Raycast(this.transform.position, Vector3.down + playerDir / 2, out jumpDetect, 0.6f))
             {
-
-                if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
+                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDir, out wallDetect, tempPlayerDir.magnitude))
                 {
-                    canJump = true;
-                    Debug.Log("GreenHit");
+                    if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
+                    {
+                        canJump = true;
+                        Debug.Log("GreenHit");
 
+                    }
                 }
 
             }
