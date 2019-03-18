@@ -196,7 +196,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1762960142499526}
   serializedVersion: 2
-  m_Mass: 15
+  m_Mass: 35
   m_Drag: 0
   m_AngularDrag: 2
   m_UseGravity: 1
@@ -229,6 +229,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 8
   playerSpeed: 3
+  canMove: 1
+  playerMovement: {x: 0, y: 0, z: 0}
 --- !u!136 &136875648247706348
 CapsuleCollider:
   m_ObjectHideFlags: 1

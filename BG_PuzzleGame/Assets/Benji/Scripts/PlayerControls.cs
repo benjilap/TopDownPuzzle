@@ -22,10 +22,16 @@ public class PlayerControls : MonoBehaviour {
     Vector3 xAxis;
     Vector3 yAxis;
 
+    [HideInInspector]
+    public Vector3 playerMovement;
+
     GameObject myPivotCamera;
 
+    [SerializeField]
+    float playerYVar ;
 
-	void Start () {
+
+    void Start () {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
 	}
 	
@@ -33,8 +39,10 @@ public class PlayerControls : MonoBehaviour {
         UpdatePlayerAxis();
         PlayerMovement();
         PlayerJump();
-        
-	}
+
+        playerYVar = this.GetComponent<Rigidbody>().velocity.y;
+
+    }
 
     void UpdatePlayerAxis()
     {
@@ -48,6 +56,7 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerMovement()
     {
+<<<<<<< HEAD:BG_PuzzleGame/Assets/Benji/Scripts/PlayerControls.cs
         playerDir = ((xAxis * Input.GetAxis("Horizontal")) + (yAxis * Input.GetAxis("Vertical"))).normalized;
         Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
 
@@ -56,10 +65,47 @@ public class PlayerControls : MonoBehaviour {
         if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDir, out hit,playerDir.magnitude/2))
         {
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+=======
+        if (canMove)
+        {
+            playerDir = ((xAxis * Input.GetAxis("Horizontal")) + (yAxis * Input.GetAxis("Vertical"))).normalized;
+            Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
+
+            RaycastHit hit;
+            Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), playerDir);
+            //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40));
+            //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, -40));
+
+            if (!canJump)
+            {
+                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), tempPlayerDir, out hit, tempPlayerDir.magnitude))
+                //&& !Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40), out hit, tempPlayerDir.magnitude)
+                //&&!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, - 40), out hit, tempPlayerDir.magnitude))
+                {
+
+                    if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+                    {
+
+                        this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
+                        tempPlayerDir = playerDir;
+                        playerMovement = tempPlayerDir;
+                    }
+                }
+            }
+            else
+>>>>>>> origin/BackUp:BG_PuzzleGame/Assets/Benji/Scripts/GameScript/PlayerControls.cs
             {
 
+<<<<<<< HEAD:BG_PuzzleGame/Assets/Benji/Scripts/PlayerControls.cs
                 this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
                 tempPlayerDir = playerDir;
+=======
+                    this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
+                    tempPlayerDir = playerDir;
+                    playerMovement = tempPlayerDir;
+
+                }
+>>>>>>> origin/BackUp:BG_PuzzleGame/Assets/Benji/Scripts/GameScript/PlayerControls.cs
             }
         }
 
@@ -69,6 +115,8 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerJump()
     {
+        Debug.DrawRay(this.transform.position, Vector3.down *0.6f + playerDir / 2, Color.green);
+
         if (Input.GetButtonDown("Jump") && canJump)
         {
 
@@ -78,35 +126,40 @@ public class PlayerControls : MonoBehaviour {
         }
         else if (!canJump)
         {
-            if (this.GetComponent<Rigidbody>().velocity.y > -1f && this.GetComponent<Rigidbody>().velocity.y < 1f)
+            RaycastHit jumpDetect;
+            if (Physics.Raycast(this.transform.position, Vector3.down + playerDir / 2, out jumpDetect, 0.6f))
             {
-                float tempPlayerHeight =0;
 
-                if (!startCheckJump)
+                if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
                 {
-                    tempPlayerHeight = this.GetComponent<Rigidbody>().velocity.y;
-                    startCheckJump = true;
-                    saveTimeCheck = Time.time;
-                }
-                timerCheck = Time.time - saveTimeCheck;
-                if (timerCheck >= timeToReset* this.GetComponent<Rigidbody>().velocity.y+timeToReset)
-                {
-                    if (tempPlayerHeight == this.GetComponent<Rigidbody>().velocity.y)
-                    {
-                        startCheckJump = false;
-                        canJump = true;
+                    canJump = true;
+                    Debug.Log("GreenHit");
 
-                    }
-                    else
-                    if (startCheckJump)
-                    {
-                        startCheckJump = false;
-                    }
                 }
+
             }
-
         }
     }
 
+<<<<<<< HEAD:BG_PuzzleGame/Assets/Benji/Scripts/PlayerControls.cs
 
+=======
+    Vector3 UpdateVecWallDetect(Vector3 originVector, float angle)
+    {
+        Vector3 myNewDir = Vector3.zero;
+        float vectorAngle = angle;
+        float initVectorAngle = Vector3.Angle(Vector3.right, originVector);
+        if (initVectorAngle < 0)
+        {
+            initVectorAngle = initVectorAngle * -1 + 180;
+        }
+        vectorAngle = initVectorAngle + angle;
+
+        myNewDir = new Vector3((Mathf.Cos(vectorAngle * Mathf.Deg2Rad)) , 0, (Mathf.Sin(vectorAngle * Mathf.Deg2Rad)) );
+
+        Debug.Log(myNewDir);
+
+        return myNewDir;
+    }
+>>>>>>> origin/BackUp:BG_PuzzleGame/Assets/Benji/Scripts/GameScript/PlayerControls.cs
 }
