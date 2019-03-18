@@ -5,13 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class LevelEnd : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    bool startLerp;
+    float saveTime;
+    float timeVar;
+
+    Vector3 startPos;
+
+    GameObject myPlayer;
+
+    void Update () {
 		
 	}
 
@@ -19,11 +21,17 @@ public class LevelEnd : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
-            GameObject myPlayer = other.gameObject;
-            myPlayer.transform.parent.GetComponent<PlayerControls>().canMove=false;
-            myPlayer.transform.parent.position = Vector3.Lerp(myPlayer.transform.parent.position, transform.position + new Vector3(0, 1, 0), 0.9f);
-            Debug.Log(Vector3.Distance(transform.position, myPlayer.transform.parent.position));
-            if (Vector3.Distance(transform.position + new Vector3(0, 1, 0), myPlayer.transform.parent.position) < 0.5f)
+            myPlayer = other.gameObject;
+            if (!startLerp)
+            {
+                startLerp = true;
+                saveTime = Time.time;
+                myPlayer.transform.parent.GetComponent<PlayerControls>().canMove=false;
+                startPos = myPlayer.transform.parent.position;
+            }
+            timeVar = Time.time - saveTime;
+            myPlayer.transform.parent.position = Vector3.Lerp(startPos + myPlayer.transform.parent.GetComponent<PlayerControls>().playerMovement, transform.position + new Vector3(0, 1, 0), timeVar*2.5f);
+            if (Vector3.Distance(transform.position + new Vector3(0, 1, 0), myPlayer.transform.parent.position) < 0.1f)
             {
                 GameManager.levelNum++;
                 SceneManager.LoadScene("Level" + GameManager.nextLevelNum);

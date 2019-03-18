@@ -24,10 +24,16 @@ public class PlayerControls : MonoBehaviour {
     Vector3 xAxis;
     Vector3 yAxis;
 
+    [HideInInspector]
+    public Vector3 playerMovement;
+
     GameObject myPivotCamera;
 
+    [SerializeField]
+    float playerYVar ;
 
-	void Start () {
+
+    void Start () {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
 	}
 	
@@ -35,8 +41,10 @@ public class PlayerControls : MonoBehaviour {
         UpdatePlayerAxis();
         PlayerMovement();
         PlayerJump();
-        
-	}
+
+        playerYVar = this.GetComponent<Rigidbody>().velocity.y;
+
+    }
 
     void UpdatePlayerAxis()
     {
@@ -62,7 +70,7 @@ public class PlayerControls : MonoBehaviour {
 
             if (!canJump)
             {
-                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDir, out hit, tempPlayerDir.magnitude))
+                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), tempPlayerDir, out hit, tempPlayerDir.magnitude))
                 //&& !Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40), out hit, tempPlayerDir.magnitude)
                 //&&!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, - 40), out hit, tempPlayerDir.magnitude))
                 {
@@ -72,6 +80,7 @@ public class PlayerControls : MonoBehaviour {
 
                         this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
                         tempPlayerDir = playerDir;
+                        playerMovement = tempPlayerDir;
                     }
                 }
             }
@@ -82,6 +91,8 @@ public class PlayerControls : MonoBehaviour {
 
                     this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
                     tempPlayerDir = playerDir;
+                    playerMovement = tempPlayerDir;
+
                 }
             }
 
@@ -92,6 +103,8 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerJump()
     {
+        Debug.DrawRay(this.transform.position, Vector3.down *0.6f + playerDir / 2, Color.green);
+
         if (Input.GetButtonDown("Jump") && canJump)
         {
 
@@ -101,33 +114,18 @@ public class PlayerControls : MonoBehaviour {
         }
         else if (!canJump)
         {
-            if (this.GetComponent<Rigidbody>().velocity.y > -1f && this.GetComponent<Rigidbody>().velocity.y < 1f)
+            RaycastHit jumpDetect;
+            if (Physics.Raycast(this.transform.position, Vector3.down + playerDir / 2, out jumpDetect, 0.6f))
             {
-                float tempPlayerHeight =0;
 
-                if (!startCheckJump)
+                if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
                 {
-                    tempPlayerHeight = this.GetComponent<Rigidbody>().velocity.y;
-                    startCheckJump = true;
-                    saveTimeCheck = Time.time;
-                }
-                timerCheck = Time.time - saveTimeCheck;
-                if (timerCheck >= timeToReset* this.GetComponent<Rigidbody>().velocity.y+timeToReset)
-                {
-                    if (tempPlayerHeight == this.GetComponent<Rigidbody>().velocity.y)
-                    {
-                        startCheckJump = false;
-                        canJump = true;
+                    canJump = true;
+                    Debug.Log("GreenHit");
 
-                    }
-                    else
-                    if (startCheckJump)
-                    {
-                        startCheckJump = false;
-                    }
                 }
+
             }
-
         }
     }
 
@@ -142,12 +140,7 @@ public class PlayerControls : MonoBehaviour {
         }
         vectorAngle = initVectorAngle + angle;
 
-
-
         myNewDir = new Vector3((Mathf.Cos(vectorAngle * Mathf.Deg2Rad)) , 0, (Mathf.Sin(vectorAngle * Mathf.Deg2Rad)) );
-
-
-
 
         Debug.Log(myNewDir);
 
