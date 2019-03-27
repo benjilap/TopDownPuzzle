@@ -21,6 +21,7 @@ public class PlayerControls : MonoBehaviour {
 
     Vector3 tempPlayerDir = new Vector3(0,0,1);
     Vector3 playerDir;
+    Vector3 playerDirNorm;
     Vector3 xAxis;
     Vector3 yAxis;
 
@@ -29,25 +30,32 @@ public class PlayerControls : MonoBehaviour {
 
     GameObject myPivotCamera;
 
-    float playerYVar ;
+    Animator charAtor;
+    Vector3 charPos;
+    Quaternion charAngle;
+    Vector3 charScale;
+
 
 
     void Start () {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
-	}
+        charAtor = this.transform.GetChild(1).GetComponent<Animator>();
+        charPos = this.transform.GetChild(1).localPosition;
+        charAngle = this.transform.GetChild(1).localRotation;
+        charScale = this.transform.GetChild(1).localScale;
+
+    }
 	
 	void FixedUpdate () {
         UpdatePlayerAxis();
         PlayerMovement();
         PlayerJump();
-
-        playerYVar = this.GetComponent<Rigidbody>().velocity.y;
+        AnimControl();
 
     }
 
     void UpdatePlayerAxis()
     {
-
         xAxis = new Vector3((Mathf.Cos(myPivotCamera.transform.eulerAngles.y * Mathf.Deg2Rad)), 0, (-Mathf.Sin(myPivotCamera.transform.eulerAngles.y * Mathf.Deg2Rad)));
         yAxis = new Vector3((-Mathf.Cos((myPivotCamera.transform.eulerAngles.y+90) * Mathf.Deg2Rad )), 0, (Mathf.Sin((myPivotCamera.transform.eulerAngles.y+90) * Mathf.Deg2Rad )));
 
@@ -59,31 +67,33 @@ public class PlayerControls : MonoBehaviour {
     {
         if (canMove)
         {
-            playerDir = ((xAxis * Input.GetAxis("Horizontal")) + (yAxis * Input.GetAxis("Vertical"))).normalized;
+            playerDir = ((xAxis * Input.GetAxis("Horizontal")) + (yAxis * Input.GetAxis("Vertical")));
+            playerDirNorm = playerDir.normalized;
             Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
 
             RaycastHit hit;
-            Debug.DrawRay(this.transform.position + new Vector3(0, -0.1f, 0), playerDir*0.5f);
+            Debug.DrawRay(this.transform.position + new Vector3(0, -0.2f, 0), playerDirNorm * 0.5f);
             //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40));
             //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, -40));
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
             {
+
                 if (!canJump)
                 {
-                    if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.1f, 0), playerDir, out hit, tempPlayerDir.magnitude*0.5f))
+                    if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.2f, 0), playerDirNorm, out hit, tempPlayerDir.magnitude*0.5f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out hit, tempPlayerDir.magnitude * 0.5f))
                     //&& !Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40), out hit, tempPlayerDir.magnitude)
                     //&&!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, - 40), out hit, tempPlayerDir.magnitude))
                     {
-                        this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
-                        tempPlayerDir = playerDir;
+                        this.GetComponent<Rigidbody>().velocity = gravity + ScalePlayerMove(playerDir) * playerSpeed;
+                        tempPlayerDir = playerDirNorm;
                         playerMovement = tempPlayerDir;
 
                     }
                 }
                 else
                 {
-                    this.GetComponent<Rigidbody>().velocity = gravity + playerDir * playerSpeed;
-                    tempPlayerDir = playerDir;
+                    this.GetComponent<Rigidbody>().velocity = gravity + ScalePlayerMove(playerDir) * playerSpeed;
+                    tempPlayerDir = playerDirNorm;
                     playerMovement = tempPlayerDir;
 
                 }
@@ -96,7 +106,7 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerJump()
     {
-        Debug.DrawRay(this.transform.position, Vector3.down *0.6f + playerDir / 2, Color.green);
+        Debug.DrawRay(this.transform.position, Vector3.down *0.9f + playerDirNorm / 2, Color.green);
 
         if (Input.GetButtonDown("Jump") && canJump)
         {
@@ -109,9 +119,9 @@ public class PlayerControls : MonoBehaviour {
         {
             RaycastHit jumpDetect;
             RaycastHit wallDetect;
-            if (Physics.Raycast(this.transform.position, Vector3.down + playerDir / 2, out jumpDetect, 0.6f))
+            if (Physics.Raycast(this.transform.position, Vector3.down + playerDirNorm / 2, out jumpDetect, 0.9f))
             {
-                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.1f, 0), playerDir, out wallDetect, tempPlayerDir.magnitude * 0.5f))
+                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.2f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f))
                 {
                     if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
                     {
@@ -125,21 +135,35 @@ public class PlayerControls : MonoBehaviour {
         }
     }
 
-    Vector3 UpdateVecWallDetect(Vector3 originVector, float angle)
+    void AnimControl()
     {
-        Vector3 myNewDir = Vector3.zero;
-        float vectorAngle = angle;
-        float initVectorAngle = Vector3.Angle(Vector3.right, originVector);
-        if (initVectorAngle < 0)
-        {
-            initVectorAngle = initVectorAngle * -1 + 180;
-        }
-        vectorAngle = initVectorAngle + angle;
+        charAtor.SetFloat("MovmentVar", playerDir.magnitude);
+        charAtor.gameObject.transform.localPosition = charPos;
+        charAtor.gameObject.transform.localRotation = charAngle;
+        charAtor.gameObject.transform.localScale = charScale;
 
-        myNewDir = new Vector3((Mathf.Cos(vectorAngle * Mathf.Deg2Rad)) , 0, (Mathf.Sin(vectorAngle * Mathf.Deg2Rad)) );
-
-        Debug.Log(myNewDir);
-
-        return myNewDir;
     }
+
+    Vector3 ScalePlayerMove(Vector3 currentPlayerDir)
+    {
+        Vector3 newPlayerDir = currentPlayerDir;
+        if (currentPlayerDir.magnitude > 0.1f && currentPlayerDir.magnitude < 0.5f)
+        {
+            newPlayerDir = currentPlayerDir.normalized * 0.5f;
+        }
+        else if (currentPlayerDir.magnitude >= 0.5f)
+        {
+            newPlayerDir = currentPlayerDir.normalized;
+
+        }        
+        else
+        {
+            newPlayerDir = Vector3.zero;
+
+        }
+
+        return newPlayerDir;
+    }
+
+   
 }
