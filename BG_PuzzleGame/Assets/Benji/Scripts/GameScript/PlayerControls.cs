@@ -106,33 +106,33 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerJump()
     {
-        Debug.DrawRay(this.transform.position, Vector3.down *0.9f + playerDirNorm / 2, Color.green);
+        Debug.DrawRay(this.transform.position, Vector3.down * 0.9f + playerDirNorm / 2, Color.green);
 
-        if (Input.GetButtonDown("Jump") && canJump)
+        RaycastHit jumpDetect;
+        RaycastHit wallDetect;
+        if (Physics.Raycast(this.transform.position, Vector3.down + playerDirNorm / 2, out jumpDetect, 0.9f))
         {
-
-            canJump = false;
-            this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
-
-        }
-        else if (!canJump)
-        {
-            RaycastHit jumpDetect;
-            RaycastHit wallDetect;
-            if (Physics.Raycast(this.transform.position, Vector3.down + playerDirNorm / 2, out jumpDetect, 0.9f))
+            if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.2f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f))
             {
-                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.2f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f))
+                canJump = true;
+
+                if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
                 {
-                    if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
+                    if (Input.GetButtonDown("Jump"))
                     {
                         canJump = true;
-                        Debug.Log("GreenHit");
+                        this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
 
                     }
                 }
-
             }
+            else
+            {
+                canJump = false;
+            }
+
         }
+
     }
 
     void AnimControl()
