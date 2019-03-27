@@ -12,6 +12,6 @@ public class UnlockDoor : MonoBehaviour {
 	
 	
 	void Update () {
-		
-	}
+        transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Animator>().SetInteger("Door_State", DoorState);
+    }
 }
