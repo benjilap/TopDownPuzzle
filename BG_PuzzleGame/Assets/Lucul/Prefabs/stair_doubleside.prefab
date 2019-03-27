@@ -9,74 +9,74 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1014814134762936}
+  m_RootGameObject: {fileID: 1843326090621086}
   m_IsPrefabAsset: 1
---- !u!1 &1014814134762936
+--- !u!1 &1834043688393192
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4096930425968264}
-  - component: {fileID: 64884055860497010}
+  - component: {fileID: 4074772439872192}
+  - component: {fileID: 33946003106680918}
+  - component: {fileID: 23860800649207064}
   m_Layer: 0
-  m_Name: stair_damaged
+  m_Name: stair_doubleside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1513284613304360
+--- !u!1 &1843326090621086
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4842917472451674}
-  - component: {fileID: 33045129502846214}
-  - component: {fileID: 23374860718699812}
+  - component: {fileID: 4090028778332666}
+  - component: {fileID: 64119035053710226}
   m_Layer: 0
-  m_Name: stair_damaged
+  m_Name: stair_doubleside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4096930425968264
+--- !u!4 &4074772439872192
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1014814134762936}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.25, y: 3, z: 8.853458}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4842917472451674}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4842917472451674
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1513284613304360}
+  m_GameObject: {fileID: 1834043688393192}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4096930425968264}
+  m_Father: {fileID: 4090028778332666}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23374860718699812
+--- !u!4 &4090028778332666
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1843326090621086}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 11.770757, y: 4, z: 8.844086}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
+  m_Children:
+  - {fileID: 4074772439872192}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23860800649207064
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1513284613304360}
+  m_GameObject: {fileID: 1834043688393192}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -106,19 +106,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33045129502846214
+--- !u!33 &33946003106680918
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1513284613304360}
-  m_Mesh: {fileID: 4300000, guid: 9b237bf3747cf1d4a89a8ce9e837b4a6, type: 3}
---- !u!64 &64884055860497010
+  m_GameObject: {fileID: 1834043688393192}
+  m_Mesh: {fileID: 4300000, guid: 9fa81c36e1adc3a40a979810df68861c, type: 3}
+--- !u!64 &64119035053710226
 MeshCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1014814134762936}
+  m_GameObject: {fileID: 1843326090621086}
   m_Material: {fileID: 13400000, guid: 5c7e8580342df994b808c7b8e6924a0e, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -126,4 +126,4 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: ca17a24937a077f4eb313d265b89a0d2, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 9fa81c36e1adc3a40a979810df68861c, type: 3}
