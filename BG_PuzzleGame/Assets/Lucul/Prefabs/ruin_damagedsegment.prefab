@@ -36,6 +36,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4055910366222010}
+  - component: {fileID: 64105315960904636}
   m_Layer: 0
   m_Name: ruin_damagedsegment
   m_TagString: Untagged
@@ -112,3 +113,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1366433990383460}
   m_Mesh: {fileID: 4300000, guid: 3afb500b9deaff7438071b34a59b23ae, type: 3}
+--- !u!64 &64105315960904636
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1597262794982262}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 459453ac81f883e4b83cce20bd80c7e3, type: 3}

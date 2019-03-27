@@ -122,9 +122,9 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1416289923688984}
   serializedVersion: 2
-  m_Mass: 25
+  m_Mass: 15
   m_Drag: 0
-  m_AngularDrag: 2
+  m_AngularDrag: 3
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -141,18 +141,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091fba7e59da0864e84674889b6be22e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 12
-  playerSpeed: 3
+  jumpForce: 6
+  playerSpeed: 4
   canMove: 1
   playerMovement: {x: 0, y: 0, z: 0}
-  playerYVar: 0
 --- !u!136 &136723480276161064
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1082321837166782}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9693d8c2a9cc18c4585d1b04aaee4a2a, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
