@@ -29,7 +29,6 @@ public class PlayerControls : MonoBehaviour {
 
     GameObject myPivotCamera;
 
-    [SerializeField]
     float playerYVar ;
 
 
@@ -64,14 +63,14 @@ public class PlayerControls : MonoBehaviour {
             Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
 
             RaycastHit hit;
-            Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), playerDir);
+            Debug.DrawRay(this.transform.position + new Vector3(0, -0.1f, 0), playerDir*0.5f);
             //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40));
             //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, -40));
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
             {
                 if (!canJump)
                 {
-                    if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDir, out hit, tempPlayerDir.magnitude))
+                    if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.1f, 0), playerDir, out hit, tempPlayerDir.magnitude*0.5f))
                     //&& !Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40), out hit, tempPlayerDir.magnitude)
                     //&&!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, - 40), out hit, tempPlayerDir.magnitude))
                     {
@@ -112,7 +111,7 @@ public class PlayerControls : MonoBehaviour {
             RaycastHit wallDetect;
             if (Physics.Raycast(this.transform.position, Vector3.down + playerDir / 2, out jumpDetect, 0.6f))
             {
-                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDir, out wallDetect, tempPlayerDir.magnitude))
+                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.1f, 0), playerDir, out wallDetect, tempPlayerDir.magnitude * 0.5f))
                 {
                     if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
                     {
