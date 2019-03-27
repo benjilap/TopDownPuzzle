@@ -95,16 +95,14 @@ public class CameraControls : MonoBehaviour {
 
     void CameraZoom()
     {
-        if (Input.GetAxis("ActiveZoom") != 0)
+
+        if (Input.GetAxis("ZoomInput") < 0)
         {
-            if (Input.GetAxis("RightStickY") < 0)
-            {
-                camZoom += zoomOffset * zoomSpeed;
-            }
-            else if (Input.GetAxis("RightStickY") > 0)
-            {
-                camZoom -= zoomOffset * zoomSpeed;
-            }
+            camZoom += zoomOffset * zoomSpeed;
+        }
+        else if (Input.GetAxis("ZoomInput") > 0)
+        {
+            camZoom -= zoomOffset * zoomSpeed;
         }
         else
         if (Input.GetAxis("Mouse ScrollWheel") > 0)

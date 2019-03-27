@@ -129,9 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c31ca0abfbf62f7478774be0d79bfa42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minZoom: 1
-  maxZoom: 3
+  minZoom: 0.5
+  maxZoom: 1
   verticalAngleOffset: 15
   camSpeedX: 25
-  zoomSpeed: 2
+  zoomSpeed: 1
   zoomOffset: 0.1

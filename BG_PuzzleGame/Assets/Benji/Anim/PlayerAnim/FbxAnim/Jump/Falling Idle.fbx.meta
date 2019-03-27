@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 92ed6e328b3a60c4b87dd856648d6acc
+guid: a877c2730d5187243aecbc308336201a
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -19,13 +19,13 @@ ModelImporter:
     100026: Character_Male_Rouge_01
     100028: Character_Male_Sorcerer
     100030: Character_Male_Wizard
-    100032: //RootNode
-    100034: Clavicle_L
-    100036: Clavicle_R
-    100038: Elbow_L
-    100040: Elbow_R
-    100042: Eyebrows
-    100044: Eyes
+    100032: Clavicle_L
+    100034: Clavicle_R
+    100036: Elbow_L
+    100038: Elbow_R
+    100040: Eyebrows
+    100042: Eyes
+    100044: //RootNode
     100046: Finger_01
     100048: Finger_011
     100050: Finger_02
@@ -93,13 +93,13 @@ ModelImporter:
     400026: Character_Male_Rouge_01
     400028: Character_Male_Sorcerer
     400030: Character_Male_Wizard
-    400032: //RootNode
-    400034: Clavicle_L
-    400036: Clavicle_R
-    400038: Elbow_L
-    400040: Elbow_R
-    400042: Eyebrows
-    400044: Eyes
+    400032: Clavicle_L
+    400034: Clavicle_R
+    400036: Elbow_L
+    400038: Elbow_R
+    400040: Eyebrows
+    400042: Eyes
+    400044: //RootNode
     400046: Finger_01
     400048: Finger_011
     400050: Finger_02
