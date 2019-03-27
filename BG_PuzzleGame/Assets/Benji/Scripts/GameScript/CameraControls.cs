@@ -18,7 +18,7 @@ public class CameraControls : MonoBehaviour {
     float maxZoom = 10f;
 
     //CamParam
-    float cameraSmooth = 0.125f;
+    float cameraSmooth = 0.5f;
     Vector3 initCamPos;
 
 
