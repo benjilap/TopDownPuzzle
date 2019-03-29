@@ -7,11 +7,11 @@ using UnityEngine;
 
 public class UnlockStairs : MonoBehaviour {
 
-    public int StairsState;
+    public bool StairsState;
     
 	
 	
 	void Update () {
-        transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Animator>().SetInteger("Door_State", DoorState);
+        transform.GetChild(1).GetComponent<Animator>().SetBool("StairsState", StairsState);
     }
 }

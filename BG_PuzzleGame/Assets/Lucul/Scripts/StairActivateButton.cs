@@ -18,7 +18,7 @@ public class StairActivateButton : MonoBehaviour
         {
 
             transform.GetChild(0).GetChild(0).GetComponent<Animator>().SetInteger("ButtonState", 1);
-            transform.parent.GetComponent<UnlockStairs>().StairsState = 1;
+            transform.parent.GetComponent<UnlockStairs>().StairsState = true;
         }
     }
 }
