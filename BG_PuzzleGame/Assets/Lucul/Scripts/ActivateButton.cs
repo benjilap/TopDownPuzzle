@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ActivateButton : MonoBehaviour {
 
-
+  
 
 
 	void Update () {
@@ -14,7 +14,9 @@ public class ActivateButton : MonoBehaviour {
     {
         if (other.CompareTag("Player"))
         {
-            GetComponent<Animator>().SetInteger("ButtonState", 1);
+            
+           transform.GetChild(0).GetChild(0).GetComponent<Animator>().SetInteger("ButtonState", 1);
+            transform.parent.GetComponent<UnlockDoor>().DoorState = 1;
         }
     }
 }

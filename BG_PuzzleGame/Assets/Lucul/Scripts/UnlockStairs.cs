@@ -5,9 +5,9 @@ using UnityEngine;
 
 
 
-public class UnlockDoor : MonoBehaviour {
+public class UnlockStairs : MonoBehaviour {
 
-    public int DoorState;
+    public int StairsState;
     
 	
 	
