@@ -9,15 +9,12 @@ public class PlayerControls : MonoBehaviour {
     [SerializeField]
     float playerSpeed=1;
 
-    bool canJump = true;
+    bool canJump;
+    bool hasJump;
     [HideInInspector]
     public bool canMove = true;
+    Vector3 climbStairs;
 
-    //CheckJumpTimer
-    bool startCheckJump;
-    float saveTimeCheck;
-    float timerCheck;
-    float timeToReset = 0.2f;
 
     Vector3 tempPlayerDir = new Vector3(0,0,1);
     Vector3 playerDir;
@@ -50,7 +47,7 @@ public class PlayerControls : MonoBehaviour {
         UpdatePlayerAxis();
         PlayerMovement();
         PlayerJump();
-        AnimControl();
+        MoveAnimControl();
 
     }
 
@@ -70,9 +67,8 @@ public class PlayerControls : MonoBehaviour {
             playerDir = ((xAxis * Input.GetAxis("Horizontal")) + (yAxis * Input.GetAxis("Vertical")));
             playerDirNorm = playerDir.normalized;
             Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
-
             RaycastHit hit;
-            Debug.DrawRay(this.transform.position + new Vector3(0, -0.2f, 0), playerDirNorm * 0.5f);
+            Debug.DrawRay(this.transform.position + new Vector3(0, -0.3f, 0), playerDirNorm * 0.5f);
             //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40));
             //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, -40));
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
@@ -90,9 +86,18 @@ public class PlayerControls : MonoBehaviour {
 
                     }
                 }
-                else
+                else if(canJump)
                 {
-                    this.GetComponent<Rigidbody>().velocity = gravity + ScalePlayerMove(playerDir) * playerSpeed;
+                    if (this.GetComponent<Rigidbody>().velocity.y > 0.01f && this.GetComponent<Rigidbody>().velocity.y < 1f)
+                    {
+
+                        climbStairs = new Vector3(0, 1, 0) * ScalePlayerMove(playerDir).magnitude;
+                    }
+                    else
+                    {
+                        climbStairs = Vector3.zero;
+                    }
+                    this.GetComponent<Rigidbody>().velocity = climbStairs + gravity + ScalePlayerMove(playerDir) * playerSpeed;
                     tempPlayerDir = playerDirNorm;
                     playerMovement = tempPlayerDir;
 
@@ -106,41 +111,51 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerJump()
     {
-        Debug.DrawRay(this.transform.position, Vector3.down * 0.9f + playerDirNorm / 2, Color.green);
+        Debug.DrawRay(this.transform.position, Vector3.down*0.95f+ playerDirNorm*0.05f, Color.green);
 
         RaycastHit jumpDetect;
         RaycastHit wallDetect;
-        if (Physics.Raycast(this.transform.position, Vector3.down + playerDirNorm / 2, out jumpDetect, 0.9f))
+        if (Physics.Raycast(this.transform.position, Vector3.down + playerDirNorm*0.05f, out jumpDetect,0.95f))
         {
+            canJump = true;
+            hasJump = false;
+
             if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.2f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f))
             {
-                canJump = true;
-
+                
                 if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
                 {
                     if (Input.GetButtonDown("Jump"))
                     {
-                        canJump = true;
+                        climbStairs = Vector3.zero;
+                        hasJump = true;
                         this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
-
                     }
                 }
-            }
-            else
-            {
-                canJump = false;
+
             }
 
+        }
+        else
+        {
+            canJump = false;
         }
 
     }
 
-    void AnimControl()
+    void MoveAnimControl()
     {
+        //MoveAnim
         charAtor.SetFloat("MovmentVar", playerDir.magnitude);
         charAtor.gameObject.transform.localPosition = charPos;
         charAtor.gameObject.transform.localRotation = charAngle;
         charAtor.gameObject.transform.localScale = charScale;
+
+        //JumpAnim
+        charAtor.SetBool("HasJump", hasJump);
+        charAtor.SetBool("IsFalling", canJump);
+
+
 
     }
 
