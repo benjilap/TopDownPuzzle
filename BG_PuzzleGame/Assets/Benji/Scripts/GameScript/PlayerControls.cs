@@ -68,7 +68,7 @@ public class PlayerControls : MonoBehaviour {
             playerDirNorm = playerDir.normalized;
             Vector3 gravity = new Vector3(0, this.GetComponent<Rigidbody>().velocity.y, 0);
             RaycastHit hit;
-            Debug.DrawRay(this.transform.position + new Vector3(0, -0.3f, 0), playerDirNorm * 0.5f);
+            Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), playerDirNorm * 0.4f);
             //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40));
             //Debug.DrawRay(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, -40));
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
@@ -76,7 +76,7 @@ public class PlayerControls : MonoBehaviour {
 
                 if (!canJump)
                 {
-                    if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.2f, 0), playerDirNorm, out hit, tempPlayerDir.magnitude*0.5f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out hit, tempPlayerDir.magnitude * 0.5f))
+                    if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDirNorm, out hit, tempPlayerDir.magnitude * 0.4f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out hit, tempPlayerDir.magnitude * 0.5f))
                     //&& !Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, 40), out hit, tempPlayerDir.magnitude)
                     //&&!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), UpdateVecWallDetect(tempPlayerDir, - 40), out hit, tempPlayerDir.magnitude))
                     {
@@ -86,24 +86,15 @@ public class PlayerControls : MonoBehaviour {
 
                     }
                 }
-                else if(canJump)
+                else
                 {
-                    if (this.GetComponent<Rigidbody>().velocity.y > 0.01f && this.GetComponent<Rigidbody>().velocity.y < 1f)
-                    {
-
-                        climbStairs = new Vector3(0, 1, 0) * ScalePlayerMove(playerDir).magnitude;
-                    }
-                    else
-                    {
-                        climbStairs = Vector3.zero;
-                    }
-                    this.GetComponent<Rigidbody>().velocity = climbStairs + gravity + ScalePlayerMove(playerDir) * playerSpeed;
+                    this.GetComponent<Rigidbody>().velocity = gravity + ScalePlayerMove(playerDir) * playerSpeed;
                     tempPlayerDir = playerDirNorm;
                     playerMovement = tempPlayerDir;
 
                 }
 
-                this.transform.rotation = Quaternion.LookRotation(tempPlayerDir);
+
             }
 
         }
@@ -120,14 +111,13 @@ public class PlayerControls : MonoBehaviour {
             canJump = true;
             hasJump = false;
 
-            if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.2f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f))
+            if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.4f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f))
             {
                 
                 if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
                 {
                     if (Input.GetButtonDown("Jump"))
                     {
-                        climbStairs = Vector3.zero;
                         hasJump = true;
                         this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
                     }
@@ -150,12 +140,15 @@ public class PlayerControls : MonoBehaviour {
         charAtor.gameObject.transform.localPosition = charPos;
         charAtor.gameObject.transform.localRotation = charAngle;
         charAtor.gameObject.transform.localScale = charScale;
+        
 
         //JumpAnim
         charAtor.SetBool("HasJump", hasJump);
         charAtor.SetBool("IsFalling", canJump);
 
-
+        //RotationControl
+        this.transform.rotation = Quaternion.LookRotation(tempPlayerDir);
+        this.transform.rotation = Quaternion.Euler(0, this.transform.eulerAngles.y, 0);
 
     }
 
