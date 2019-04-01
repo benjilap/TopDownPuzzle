@@ -32,7 +32,7 @@ public class PlayerControls : MonoBehaviour {
     Quaternion charAngle;
     Vector3 charScale;
 
-
+    public float yVelocity;
 
     void Start () {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
@@ -45,9 +45,13 @@ public class PlayerControls : MonoBehaviour {
 	
 	void FixedUpdate () {
         UpdatePlayerAxis();
+
         PlayerMovement();
         PlayerJump();
         MoveAnimControl();
+
+        yVelocity = this.GetComponent<Rigidbody>().velocity.y;
+        Debug.Log(yVelocity);
 
     }
 
@@ -96,17 +100,27 @@ public class PlayerControls : MonoBehaviour {
 
 
             }
+            else if (Input.GetAxis("Horizontal") == 0 & Input.GetAxis("Vertical") == 0)
+            {
+                if (this.GetComponent<Rigidbody>().velocity.y < 0 )
+                {
+                    if (canJump&&!hasJump)
+                    {
+                        this.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
+                    }
+                }
+            }
         }
     }
 
     void PlayerJump()
     {
-        Debug.DrawRay(this.transform.position, Vector3.down*0.95f+ playerDirNorm*0.05f, Color.green);
+        Debug.DrawRay(this.transform.position, Vector3.down*0.9f+ playerDirNorm*0.05f, Color.green);
 
         RaycastHit jumpDetect;
         RaycastHit wallDetect;
-        if (Physics.Raycast(this.transform.position, Vector3.down + playerDirNorm*0.05f, out jumpDetect,0.95f))
+        if (Physics.Raycast(this.transform.position, Vector3.down + playerDirNorm*0.05f, out jumpDetect,0.9f))
         {
             canJump = true;
             hasJump = false;
@@ -121,6 +135,7 @@ public class PlayerControls : MonoBehaviour {
                         hasJump = true;
                         this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
                     }
+
                 }
 
             }
@@ -150,6 +165,18 @@ public class PlayerControls : MonoBehaviour {
         this.transform.rotation = Quaternion.LookRotation(tempPlayerDir);
         this.transform.rotation = Quaternion.Euler(0, this.transform.eulerAngles.y, 0);
 
+    }
+
+    void StopSliding()
+    {
+        if (canJump == true)
+        {
+            if (Input.GetAxis("Horizontal") == 0 || Input.GetAxis("Vertical") == 0)
+            {
+                this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+            }
+        }
     }
 
     Vector3 ScalePlayerMove(Vector3 currentPlayerDir)
