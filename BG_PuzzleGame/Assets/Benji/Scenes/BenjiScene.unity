@@ -2123,6 +2123,7 @@ MonoBehaviour:
   canMove: 1
   playerMovement: {x: 0, y: 0, z: 0}
   yVelocity: 0
+  spellForce: 100
 --- !u!4 &1659118930
 Transform:
   m_ObjectHideFlags: 0

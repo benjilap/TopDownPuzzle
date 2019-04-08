@@ -34,11 +34,18 @@ public class PlayerControls : MonoBehaviour {
 
     public float yVelocity;
 
+    [SerializeField]
+    float spellForce;
     int useSpellState;
     GameObject spellSpawner;
     GameObject spellPrefab;
     GameObject spellCasted;
-    
+    Vector3 spellDir;
+    static float saveSpellTimer;
+    public bool startTimer;
+    static bool resetTimer;
+    static bool launchSpellTimer;
+
     void Start () {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
         charAtor = this.transform.GetChild(1).GetComponent<Animator>();
@@ -56,6 +63,7 @@ public class PlayerControls : MonoBehaviour {
         PlayerMovement();
         PlayerJump();
         MoveAnimControl();
+        StopSliding();
 
 
     }
@@ -158,43 +166,110 @@ public class PlayerControls : MonoBehaviour {
 
     void CastSpell()
     {
-        Debug.Log(Input.GetAxis("FireSpell"));
-        if (Input.GetAxis("FireSpell")>0)
+
+        //Debug.Log(Input.GetAxis("FireSpell"));
+        if (Input.GetAxis("FireSpell") > 0)
         {
-            if (useSpellState == 0)
+            if (spellCasted == null)
             {
-                useSpellState = 1;
-                canMove = false;
-                this.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            }
-            else if (useSpellState == 1)
-            {
-                useSpellState = 2;
-                StartCoroutine(WaitTimeToModifSpellState(1,2));
+                if (SpellTimer(startTimer, 0.3f))
+                {
+                    if (useSpellState == 1)
+                    {
+                        useSpellState = 2;
+                        spellCasted = Instantiate(spellPrefab, spellSpawner.transform.position, Quaternion.identity);
+                        spellCasted.transform.SetParent(spellSpawner.transform);
+                    }
+                    else
+                    {
+                        useSpellState = 1;
+                    }
+                    startTimer = false;
+                }
+                else
+                {
+                    if (useSpellState == 0)
+                    {
+                        useSpellState = 1;
+                    }
+                    startTimer = true;
+                    canMove = false;
+                    this.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
-                
-
+                }
             }
         }
-        else if (useSpellState != 0)
+        else if (saveSpellTimer != 0)
         {
-            if (spellCasted != null)
-            {
-                spellCasted.GetComponent<Rigidbody>().AddForce(tempPlayerDir);
-                spellCasted.GetComponent<Rigidbody>().useGravity = true;
-                spellCasted.transform.parent = null;
-                spellCasted = null;
-            }
-            float timeToReset = useSpellState;
-            useSpellState = 0;
-            if (!canMove)
-            {
 
-                StartCoroutine(WaitTimeToMove(timeToReset-0.1f*timeToReset));
-
+            if (useSpellState < 2)
+            {
+                if (spellCasted != null)
+                {
+                    Destroy(spellCasted);
+                }
+                if (SpellTimer(resetTimer, 0.2f))
+                {
+                    resetTimer = false;
+                    useSpellState = 0;
+                    canMove = true;
+                    startTimer = false;
+                }
+                else
+                {
+                    resetTimer = true;
+                }
             }
+            else
+            {
+                useSpellState = 3;
+                if (SpellTimer(launchSpellTimer, 0.4f))
+                {
+                    launchSpellTimer = false;
+                    if (spellCasted != null)
+                    {
+                        spellCasted.transform.parent = null;
+                        spellCasted.GetComponent<Rigidbody>().AddForce((tempPlayerDir + spellDir) * spellForce);
+                        spellCasted.GetComponent<Rigidbody>().useGravity = true;
+                        spellCasted = null;
+                    }
+                }
+                else
+                {
+                    launchSpellTimer = true;
+
+                }
+            }
+
         }
-        
+    }
+
+    
+    
+
+    static bool SpellTimer(bool spellCast,float timeToWait)
+    {
+        bool spellState = false;
+        if (!spellCast)
+        {
+
+            spellCast = true; 
+            saveSpellTimer = Time.time;
+        }
+        if (Time.time >= saveSpellTimer+ timeToWait)
+        {
+
+            spellCast = false;
+            return spellState = true;
+
+        }
+        else
+        {
+
+            return spellState =false;
+
+        }
+
     }
 
     void MoveAnimControl()
@@ -243,25 +318,6 @@ public class PlayerControls : MonoBehaviour {
         }
     }
 
-    IEnumerator WaitTime(float timeToWait)
-    {
-        yield return new WaitForSeconds(timeToWait);
-        print("WaitAndPrint " + Time.time);
-
-    }
-    IEnumerator WaitTimeToModifSpellState(float timeToWait,int newSpellState)
-    {
-        yield return new WaitForSeconds(timeToWait);
-        useSpellState = newSpellState;
-        spellCasted = Instantiate(spellPrefab, spellSpawner.transform.position, Quaternion.identity);
-        spellCasted.transform.SetParent(spellSpawner.transform);
-
-    }
-    IEnumerator WaitTimeToMove(float timeToWait)
-    {
-        yield return new WaitForSeconds(timeToWait);
-        canMove = true;
-    }
 
     Vector3 ScalePlayerMove(Vector3 currentPlayerDir)
     {
