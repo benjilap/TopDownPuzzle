@@ -32,19 +32,23 @@ public class PlayerControls : MonoBehaviour {
     Quaternion charAngle;
     Vector3 charScale;
 
-    public float yVelocity;
-
     [SerializeField]
     float spellForce;
     int useSpellState;
     GameObject spellSpawner;
     GameObject spellPrefab;
     GameObject spellCasted;
+    [SerializeField]
+    float ySpellOffset;
+    [SerializeField]
+    float rangeSpell = 5;
     Vector3 spellDir;
+    Vector3 spellOffsetPlayer;
+    [SerializeField]
     static float saveSpellTimer;
-    public bool startTimer;
-    static bool resetTimer;
-    static bool launchSpellTimer;
+    bool startTimer;
+    bool resetTimer;
+    bool launchSpellTimer;
 
     void Start () {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
@@ -170,21 +174,27 @@ public class PlayerControls : MonoBehaviour {
         //Debug.Log(Input.GetAxis("FireSpell"));
         if (Input.GetAxis("FireSpell") > 0)
         {
-            if (spellCasted == null)
+            if (spellCasted == null& !launchSpellTimer)
             {
-                if (SpellTimer(startTimer, 0.3f))
+                if (useSpellState == 2)
                 {
-                    if (useSpellState == 1)
+                    if (SpellTimer(startTimer, 0.4f))
                     {
-                        useSpellState = 2;
+                        startTimer = false;
                         spellCasted = Instantiate(spellPrefab, spellSpawner.transform.position, Quaternion.identity);
                         spellCasted.transform.SetParent(spellSpawner.transform);
+                        spellCasted.GetComponent<SpellInteract>().player = this.gameObject;
                     }
                     else
                     {
-                        useSpellState = 1;
+                        startTimer = true;
                     }
+                }else
+                if (SpellTimer(startTimer, 0.3f))
+                {
+
                     startTimer = false;
+                    useSpellState = 2;
                 }
                 else
                 {
@@ -192,6 +202,7 @@ public class PlayerControls : MonoBehaviour {
                     {
                         useSpellState = 1;
                     }
+                    resetTimer = false;
                     startTimer = true;
                     canMove = false;
                     this.GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -222,17 +233,23 @@ public class PlayerControls : MonoBehaviour {
             }
             else
             {
-                useSpellState = 3;
+                if (spellCasted != null)
+                {
+                    useSpellState = 3;
+                }
+
                 if (SpellTimer(launchSpellTimer, 0.4f))
                 {
-                    launchSpellTimer = false;
                     if (spellCasted != null)
                     {
                         spellCasted.transform.parent = null;
-                        spellCasted.GetComponent<Rigidbody>().AddForce((tempPlayerDir + spellDir) * spellForce);
+                        spellCasted.GetComponent<Rigidbody>().AddForce(UpdateSpellPlayerOffset());
                         spellCasted.GetComponent<Rigidbody>().useGravity = true;
                         spellCasted = null;
+
                     }
+                    useSpellState = 0;
+                    launchSpellTimer = false;
                 }
                 else
                 {
@@ -299,7 +316,7 @@ public class PlayerControls : MonoBehaviour {
         }
         this.transform.rotation = Quaternion.Euler(0, this.transform.eulerAngles.y, 0);
 
-        //SPellCastAnim
+        //SpellCastAnim
         
         charAtor.SetInteger("UseSpellState", useSpellState);
         
@@ -310,7 +327,7 @@ public class PlayerControls : MonoBehaviour {
     {
         if (canJump == true)
         {
-            if (Input.GetAxis("Horizontal") == 0 || Input.GetAxis("Vertical") == 0)
+            if (Input.GetAxis("Horizontal") == 0 & Input.GetAxis("Vertical") == 0)
             {
                 this.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
@@ -340,5 +357,12 @@ public class PlayerControls : MonoBehaviour {
         return newPlayerDir;
     }
 
+    Vector3 UpdateSpellPlayerOffset()
+    {
+        Vector3 newSpellForce = Vector3.zero;
+        spellDir = new Vector3(0, ySpellOffset, 0);
+        newSpellForce = (((tempPlayerDir * rangeSpell + this.transform.position) - spellSpawner.transform.position)+spellDir)*spellForce;
+        return newSpellForce;
+    }
    
 }

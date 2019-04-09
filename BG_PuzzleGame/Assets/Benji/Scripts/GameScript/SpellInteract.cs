@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class SpellInteract : MonoBehaviour {
 
-	// Use this for initialization
+    [HideInInspector]
+    public GameObject player;
+
+
 	void Start () {
 		
 	}
@@ -17,7 +20,7 @@ public class SpellInteract : MonoBehaviour {
     void CheckCollision()
     {
         RaycastHit ObstacleCollide;
-        if (Physics.Raycast(transform.position, this.GetComponent<Rigidbody>().velocity, out ObstacleCollide, 0.1f)){
+        if (Physics.Raycast(transform.position, this.GetComponent<Rigidbody>().velocity, out ObstacleCollide, 0.5f)){
             if(ObstacleCollide.transform.gameObject.tag != "Player")
             {
             Destroy(this.gameObject);
@@ -27,6 +30,22 @@ public class SpellInteract : MonoBehaviour {
             {
 
             }
+
+        }
+    }
+
+    void CheckPos()
+    {
+        if (player != null)
+        {
+            if (Vector3.Distance(this.transform.position, player.transform.position) > 1000)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+        else
+        {
+            Destroy(this.gameObject);
 
         }
     }
