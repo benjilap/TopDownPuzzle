@@ -50,6 +50,11 @@ public class PlayerControls : MonoBehaviour {
     bool resetTimer;
     bool launchSpellTimer;
 
+
+    public string[] spellName = new string[1];
+    List<SpellOrder> spellList = new List<SpellOrder>();
+    int actualSpell =1;
+
     void Start () {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
         charAtor = this.transform.GetChild(1).GetComponent<Animator>();
@@ -58,6 +63,9 @@ public class PlayerControls : MonoBehaviour {
         charScale = this.transform.GetChild(1).localScale;
         spellSpawner = charAtor.transform.Find("Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/SpellPoint").gameObject;
         spellPrefab = Resources.Load<GameObject>("Player/SpellPrefab");
+        spellName.SetValue("Water", 0);
+        SetSpell();
+        
     }
 	
 	void FixedUpdate () {
@@ -184,6 +192,12 @@ public class PlayerControls : MonoBehaviour {
                         spellCasted = Instantiate(spellPrefab, spellSpawner.transform.position, Quaternion.identity);
                         spellCasted.transform.SetParent(spellSpawner.transform);
                         spellCasted.GetComponent<SpellInteract>().player = this.gameObject;
+                        for(int i = 0; i < spellList.Count; i++)
+                        {
+
+                            spellCasted.GetComponent<SpellInteract>().actualElement = spellList[i].ReturnNameForID(actualSpell);
+
+                        }
                     }
                     else
                     {
@@ -209,6 +223,7 @@ public class PlayerControls : MonoBehaviour {
 
                 }
             }
+
         }
         else if (saveSpellTimer != 0)
         {
@@ -261,7 +276,15 @@ public class PlayerControls : MonoBehaviour {
         }
     }
 
-    
+    void SetSpell()
+    {
+        for (int i = 0; i < spellName.Length; i++)
+        {
+            SpellOrder newSpell = new SpellOrder();
+            newSpell.UpdateSpell(spellName[i], i + 1);
+            spellList.Add(newSpell);
+        }
+    } 
     
 
     static bool SpellTimer(bool spellCast,float timeToWait)
@@ -364,5 +387,31 @@ public class PlayerControls : MonoBehaviour {
         newSpellForce = (((tempPlayerDir * rangeSpell + this.transform.position) - spellSpawner.transform.position)+spellDir)*spellForce;
         return newSpellForce;
     }
-   
+
+}
+
+public class SpellOrder
+{
+    
+    string spellName;
+    int spellID;
+
+    public void UpdateSpell(string newSpellName,int newSpellID)
+    {
+        spellName = newSpellName;
+        spellID = newSpellID;
+    }
+
+    public string ReturnNameForID(int actualSpell)
+    {
+        if(actualSpell == spellID)
+        {
+            return spellName;
+
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
