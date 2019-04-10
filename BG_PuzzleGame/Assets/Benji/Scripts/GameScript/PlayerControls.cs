@@ -63,13 +63,13 @@ public class PlayerControls : MonoBehaviour {
 	void FixedUpdate () {
         UpdatePlayerAxis();
 
-        CastSpell();
         PlayerMovement();
         PlayerJump();
         MoveAnimControl();
-        StopSliding();
-
-
+        if (canJump)
+        {
+            CastSpell();
+        }
     }
 
     void UpdatePlayerAxis()
