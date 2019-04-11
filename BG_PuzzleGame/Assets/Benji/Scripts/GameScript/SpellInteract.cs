@@ -6,10 +6,11 @@ public class SpellInteract : MonoBehaviour {
 
     [HideInInspector]
     public GameObject player;
+    [HideInInspector]
+    public string actualElement;
 
+    void Start () {
 
-	void Start () {
-		
 	}
 	
 	// Update is called once per frame
@@ -20,11 +21,18 @@ public class SpellInteract : MonoBehaviour {
     void CheckCollision()
     {
         RaycastHit ObstacleCollide;
-        if (Physics.Raycast(transform.position, this.GetComponent<Rigidbody>().velocity, out ObstacleCollide, 0.5f)){
+        if (Physics.Raycast(transform.position, this.GetComponent<Rigidbody>().velocity, out ObstacleCollide, 0.2f)){
             if(ObstacleCollide.transform.gameObject.tag != "Player")
             {
-            Destroy(this.gameObject);
-
+                if (actualElement == "Water")
+                {
+                        Debug.Log(ObstacleCollide.collider.gameObject);
+                    if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>() != null)
+                    {
+                        ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().hittedState = 1;
+                    }
+                }
+                Destroy(this.gameObject);
             }
             else
             {
