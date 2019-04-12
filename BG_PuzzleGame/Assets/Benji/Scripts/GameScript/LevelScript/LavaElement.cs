@@ -21,6 +21,7 @@ public class LavaElement : MonoBehaviour {
     bool lavaInLerp;
     bool obsiInLerp;
     static float saveTimeLerp;
+    static float saveTimeReset;
 
     private void Start()
     {
@@ -96,13 +97,13 @@ public class LavaElement : MonoBehaviour {
         if (!resetLava)
         {
             resetLava = true;
-            saveTimeLerp = Time.time;
+            saveTimeReset = Time.time;
         }
 
-        if (Time.time>= saveTimeLerp + timeToWait)
+        if (Time.time>= saveTimeReset + timeToWait)
         {
             hittedState = 0;
-
+            resetLava = false;
         }
     }
 }
