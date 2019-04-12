@@ -39,9 +39,11 @@ public class PlayerControls : MonoBehaviour {
     GameObject spellPrefab;
     GameObject spellCasted;
     [SerializeField]
-    float ySpellOffset;
+    float ySpellOffset=3;
+    public float launchYSpellOffset;
     [SerializeField]
     float rangeSpell = 5;
+    public float launchRangeSpell;
     Vector3 spellDir;
     Vector3 spellOffsetPlayer;
     [SerializeField]
@@ -49,7 +51,15 @@ public class PlayerControls : MonoBehaviour {
     bool startTimer;
     bool resetTimer;
     bool launchSpellTimer;
+    bool upSpell;
 
+    [SerializeField]
+    float upOffset=1;
+    float maxSpellHeight;
+    float minSpellHeight;
+    float maxSpellRange;
+    float minSpellRange;
+    Vector3 initScale;
 
     string[] spellName = new string[1];
     List<SpellOrder> spellList = new List<SpellOrder>();
@@ -57,10 +67,10 @@ public class PlayerControls : MonoBehaviour {
 
     void Start () {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
-        charAtor = this.transform.GetChild(1).GetComponent<Animator>();
-        charPos = this.transform.GetChild(1).localPosition;
-        charAngle = this.transform.GetChild(1).localRotation;
-        charScale = this.transform.GetChild(1).localScale;
+        charAtor = this.transform.GetChild(0).GetComponent<Animator>();
+        charPos = this.transform.GetChild(0).localPosition;
+        charAngle = this.transform.GetChild(0).localRotation;
+        charScale = this.transform.GetChild(0).localScale;
         spellSpawner = charAtor.transform.Find("Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/SpellPoint").gameObject;
         spellPrefab = Resources.Load<GameObject>("Player/SpellPrefab");
         spellName.SetValue("Water", 0);
@@ -192,7 +202,10 @@ public class PlayerControls : MonoBehaviour {
                         spellCasted = Instantiate(spellPrefab, spellSpawner.transform.position, Quaternion.identity);
                         spellCasted.transform.SetParent(spellSpawner.transform);
                         spellCasted.GetComponent<SpellInteract>().player = this.gameObject;
-                        for(int i = 0; i < spellList.Count; i++)
+                        launchRangeSpell = minSpellRange;
+                        launchYSpellOffset = minSpellHeight;
+                        initScale = spellCasted.transform.localScale;
+                        for (int i = 0; i < spellList.Count; i++)
                         {
 
                             spellCasted.GetComponent<SpellInteract>().actualElement = spellList[i].ReturnNameForID(actualSpell);
@@ -221,6 +234,23 @@ public class PlayerControls : MonoBehaviour {
                     canMove = false;
                     this.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
+                }
+            }
+            if (spellCasted != null)
+            {
+                if (launchRangeSpell < maxSpellRange)
+                {
+                    if (SpellTimer(upSpell, 0.1f))
+                    {
+            Debug.Log("2");
+
+                        UpSpell(spellCasted);
+                        upSpell = false;
+                    }
+                    else
+                    {
+                        upSpell = true;
+                    }
                 }
             }
 
@@ -276,6 +306,20 @@ public class PlayerControls : MonoBehaviour {
         }
     }
 
+    void UpSpell(GameObject castedSpell)
+    {
+        if (castedSpell.transform.localScale.x < initScale.x*3)
+        {
+            Debug.Log("1");
+            Debug.Log(initScale);
+            castedSpell.transform.localScale += new Vector3((initScale.x *2/100 )* Time.deltaTime, (initScale.x * 2 / 100) * Time.deltaTime, (initScale.x * 2 / 100) * Time.deltaTime) * upOffset;
+        }
+        launchRangeSpell += (((maxSpellRange - minSpellRange)/100) * Time.deltaTime) * upOffset;
+        launchYSpellOffset += (((maxSpellHeight - minSpellHeight) /100)*Time.deltaTime) * upOffset;
+
+
+    }
+
     void SetSpell()
     {
         for (int i = 0; i < spellName.Length; i++)
@@ -284,6 +328,10 @@ public class PlayerControls : MonoBehaviour {
             newSpell.UpdateSpell(spellName[i], i + 1);
             spellList.Add(newSpell);
         }
+        maxSpellHeight = ySpellOffset;
+        maxSpellRange = rangeSpell;
+        minSpellHeight = 1;
+        minSpellRange = 1;
     } 
     
 
@@ -383,8 +431,8 @@ public class PlayerControls : MonoBehaviour {
     Vector3 UpdateSpellPlayerOffset()
     {
         Vector3 newSpellForce = Vector3.zero;
-        spellDir = new Vector3(0, ySpellOffset, 0);
-        newSpellForce = (((tempPlayerDir * rangeSpell + this.transform.position) - spellSpawner.transform.position)+spellDir)*spellForce;
+        spellDir = new Vector3(0, launchYSpellOffset, 0);
+        newSpellForce = (((tempPlayerDir * launchRangeSpell + this.transform.position) - spellSpawner.transform.position)+spellDir)*spellForce;
         return newSpellForce;
     }
 

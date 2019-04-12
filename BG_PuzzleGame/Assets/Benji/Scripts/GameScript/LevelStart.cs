@@ -6,6 +6,7 @@ public class LevelStart : MonoBehaviour {
 
     [SerializeField]
     Vector3 spawnPos;
+    float spawnAngle;
 
     Object playerPrefab;
 
@@ -22,7 +23,7 @@ public class LevelStart : MonoBehaviour {
     {
         if (GameObject.FindGameObjectWithTag("Player") == null)
         {
-            Instantiate(playerPrefab, transform.position + spawnPos, Quaternion.identity);
+            Instantiate(playerPrefab, transform.position + spawnPos, Quaternion.Euler(0,spawnAngle,0));
             if (GameManager.nextLevelNum == GameManager.levelNum)
             {
                 GameManager.nextLevelNum++;

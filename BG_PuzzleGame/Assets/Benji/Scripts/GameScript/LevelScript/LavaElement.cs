@@ -37,12 +37,10 @@ public class LavaElement : MonoBehaviour {
         if (Vector3.Distance(meshObsidian.transform.position, nextObsidianPos) > 0.1f && !obsiInLerp)
         {
             LerpElement(meshObsidian, nextObsidianPos);
-            Debug.Log("1");
         }else
         if (Vector3.Distance(meshLava.transform.position, nextLavaPos) > 0.1f && !lavaInLerp)
         {
             LerpElement(meshLava, nextLavaPos);
-            Debug.Log("2");
 
         }
     }

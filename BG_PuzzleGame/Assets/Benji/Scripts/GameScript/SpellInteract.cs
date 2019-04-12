@@ -26,7 +26,7 @@ public class SpellInteract : MonoBehaviour {
             {
                 if (actualElement == "Water")
                 {
-                        Debug.Log(ObstacleCollide.collider.gameObject);
+
                     if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>() != null)
                     {
                         ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().hittedState = 1;
