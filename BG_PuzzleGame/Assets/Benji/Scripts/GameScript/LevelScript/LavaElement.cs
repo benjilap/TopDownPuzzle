@@ -14,8 +14,13 @@ public class LavaElement : MonoBehaviour {
     Vector3 nextLavaPos;
     Vector3 nextObsidianPos;
 
+    [SerializeField]
+    float timeToReset = 10;
+    [HideInInspector]
+    public bool resetLava;
     bool lavaInLerp;
     bool obsiInLerp;
+    static float saveTimeLerp;
 
     private void Start()
     {
@@ -30,19 +35,20 @@ public class LavaElement : MonoBehaviour {
         SetNextPos();
         if (Vector3.Distance(meshObsidian.transform.position, nextObsidianPos) > 0.1f && !obsiInLerp)
         {
-            obsiInLerp = true;
-            StartCoroutine(LerpElement(meshObsidian, nextObsidianPos));
-        }
+            LerpElement(meshObsidian, nextObsidianPos);
+            Debug.Log("1");
+        }else
         if (Vector3.Distance(meshLava.transform.position, nextLavaPos) > 0.1f && !lavaInLerp)
         {
-            lavaInLerp = true;
-            StartCoroutine(LerpElement(meshLava, nextLavaPos));
+            LerpElement(meshLava, nextLavaPos);
+            Debug.Log("2");
 
         }
     }
 
     void SetNextPos()
     {
+
         if (hittedState == 0)
         {
             nextLavaPos = pos0State;
@@ -52,20 +58,51 @@ public class LavaElement : MonoBehaviour {
         {
             nextLavaPos = pos1State;
             nextObsidianPos = pos0State;
+            ResetLava(timeToReset);
         }
+
+        
     }
 
-    IEnumerator LerpElement(GameObject myGameObject, Vector3 myNextPos)
+    void LerpElement(GameObject myGameObject, Vector3 myNextPos)
     {
-        float saveTime = Time.time;
-        while (Vector3.Distance(myGameObject.transform.position, myNextPos) > 0.1f)
+        if (saveTimeLerp == 0)
         {
-            myGameObject.transform.position = Vector3.Lerp(myGameObject.transform.position, myNextPos, Time.time-saveTime);
-            if (Vector3.Distance(meshObsidian.transform.position, nextObsidianPos) <= 0.1f)
+        saveTimeLerp = Time.time;
+
+        }
+
+        //while (Vector3.Distance(myGameObject.transform.position, myNextPos) > 0.1f)
+        if(Vector3.Distance(myGameObject.transform.position, myNextPos) > 0.1f)
+        {
+
+            myGameObject.transform.position = Vector3.Lerp(myGameObject.transform.position, myNextPos, (Time.time-saveTimeLerp)*0.2f);
+            if (Vector3.Distance(myGameObject.transform.position, myNextPos) <= 0.1f)
             {
-                meshObsidian.transform.position = nextObsidianPos;
-                yield return 0;
+                myGameObject.transform.position = myNextPos;
+                saveTimeLerp = 0;
+                
+
             }
+        }
+        
+
+    }
+
+    void ResetLava(float timeToWait)
+    {
+
+        
+        if (!resetLava)
+        {
+            resetLava = true;
+            saveTimeLerp = Time.time;
+        }
+
+        if (Time.time>= saveTimeLerp + timeToWait)
+        {
+            hittedState = 0;
+
         }
     }
 }

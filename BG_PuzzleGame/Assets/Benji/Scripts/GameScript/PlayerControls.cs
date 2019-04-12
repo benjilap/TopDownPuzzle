@@ -51,7 +51,7 @@ public class PlayerControls : MonoBehaviour {
     bool launchSpellTimer;
 
 
-    public string[] spellName = new string[1];
+    string[] spellName = new string[1];
     List<SpellOrder> spellList = new List<SpellOrder>();
     int actualSpell =1;
 
@@ -186,7 +186,7 @@ public class PlayerControls : MonoBehaviour {
             {
                 if (useSpellState == 2)
                 {
-                    if (SpellTimer(startTimer, 0.4f))
+                    if (SpellTimer(startTimer, 0.2f))
                     {
                         startTimer = false;
                         spellCasted = Instantiate(spellPrefab, spellSpawner.transform.position, Quaternion.identity);

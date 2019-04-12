@@ -2025,7 +2025,7 @@ MonoBehaviour:
   playerMovement: {x: 0, y: 0, z: 0}
   spellForce: 100
   ySpellOffset: 1
-  rangeSpell: 5
+  rangeSpell: 3
 --- !u!136 &136316542776076406
 CapsuleCollider:
   m_ObjectHideFlags: 1

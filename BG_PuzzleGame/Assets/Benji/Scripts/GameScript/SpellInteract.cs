@@ -30,6 +30,10 @@ public class SpellInteract : MonoBehaviour {
                     if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>() != null)
                     {
                         ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().hittedState = 1;
+                        if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().resetLava)
+                        {
+                            ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().resetLava = false;
+                        }
                     }
                 }
                 Destroy(this.gameObject);
