@@ -20,8 +20,8 @@ public class LavaElement : MonoBehaviour {
     public bool resetLava;
     bool lavaInLerp;
     bool obsiInLerp;
-    static float saveTimeLerp;
-    static float saveTimeReset;
+    float saveTimeLerp;
+    float saveTimeReset;
 
     private void Start()
     {

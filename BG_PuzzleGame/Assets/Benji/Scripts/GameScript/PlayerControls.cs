@@ -40,10 +40,10 @@ public class PlayerControls : MonoBehaviour {
     GameObject spellCasted;
     [SerializeField]
     float ySpellOffset=3;
-    public float launchYSpellOffset;
+    float launchYSpellOffset;
     [SerializeField]
     float rangeSpell = 5;
-    public float launchRangeSpell;
+    float launchRangeSpell;
     Vector3 spellDir;
     Vector3 spellOffsetPlayer;
     [SerializeField]
@@ -61,11 +61,12 @@ public class PlayerControls : MonoBehaviour {
     float minSpellRange;
     Vector3 initScale;
 
-    string[] spellName = new string[1];
+    public string[] spellName = new string[1];
     List<SpellOrder> spellList = new List<SpellOrder>();
     int actualSpell =1;
 
-    void Start () {
+    void Start()
+    {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
         charAtor = this.transform.GetChild(0).GetComponent<Animator>();
         charPos = this.transform.GetChild(0).localPosition;
@@ -73,9 +74,12 @@ public class PlayerControls : MonoBehaviour {
         charScale = this.transform.GetChild(0).localScale;
         spellSpawner = charAtor.transform.Find("Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/SpellPoint").gameObject;
         spellPrefab = Resources.Load<GameObject>("Player/SpellPrefab");
+        spellName = new string[2];
+
         spellName.SetValue("Water", 0);
+        spellName.SetValue("Fire", 1);
         SetSpell();
-        
+
     }
 	
 	void FixedUpdate () {
@@ -207,9 +211,11 @@ public class PlayerControls : MonoBehaviour {
                         initScale = spellCasted.transform.localScale;
                         for (int i = 0; i < spellList.Count; i++)
                         {
+                            if (spellList[i].ReturnNameForID(actualSpell) != null)
+                            {
 
-                            spellCasted.GetComponent<SpellInteract>().actualElement = spellList[i].ReturnNameForID(actualSpell);
-
+                                spellCasted.GetComponent<SpellInteract>().actualElement = spellList[i].ReturnNameForID(actualSpell);
+                            }
                         }
                     }
                     else
@@ -242,7 +248,7 @@ public class PlayerControls : MonoBehaviour {
                 {
                     if (SpellTimer(upSpell, 0.1f))
                     {
-            Debug.Log("2");
+
 
                         UpSpell(spellCasted);
                         upSpell = false;
@@ -310,8 +316,8 @@ public class PlayerControls : MonoBehaviour {
     {
         if (castedSpell.transform.localScale.x < initScale.x*3)
         {
-            Debug.Log("1");
-            Debug.Log(initScale);
+
+
             castedSpell.transform.localScale += new Vector3((initScale.x *2/100 )* Time.deltaTime, (initScale.x * 2 / 100) * Time.deltaTime, (initScale.x * 2 / 100) * Time.deltaTime) * upOffset;
         }
         launchRangeSpell += (((maxSpellRange - minSpellRange)/100) * Time.deltaTime) * upOffset;
@@ -325,7 +331,7 @@ public class PlayerControls : MonoBehaviour {
         for (int i = 0; i < spellName.Length; i++)
         {
             SpellOrder newSpell = new SpellOrder();
-            newSpell.UpdateSpell(spellName[i], i + 1);
+            newSpell.UpdateSpell(spellName[i], i );
             spellList.Add(newSpell);
         }
         maxSpellHeight = ySpellOffset;

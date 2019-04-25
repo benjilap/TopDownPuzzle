@@ -36,6 +36,16 @@ public class SpellInteract : MonoBehaviour {
                         }
                     }
                 }
+
+                if (actualElement == "Fire")
+                {
+
+                    if (ObstacleCollide.collider.gameObject.transform.GetComponent<WaterElement>() != null)
+                    {
+                        ObstacleCollide.collider.gameObject.transform.GetComponent<WaterElement>().geyserState = 1;
+
+                    }
+                }
                 Destroy(this.gameObject);
             }
             else
