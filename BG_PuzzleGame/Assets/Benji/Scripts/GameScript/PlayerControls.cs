@@ -63,7 +63,7 @@ public class PlayerControls : MonoBehaviour {
 
     public string[] spellName = new string[1];
     List<SpellOrder> spellList = new List<SpellOrder>();
-    int actualSpell =1;
+    int actualSpell =0;
 
     void Start()
     {
@@ -92,6 +92,7 @@ public class PlayerControls : MonoBehaviour {
         {
             CastSpell();
         }
+        ChangeElement();
     }
 
     void UpdatePlayerAxis()
@@ -400,14 +401,39 @@ public class PlayerControls : MonoBehaviour {
 
     }
 
-    void StopSliding()
-    {
-        if (canJump == true)
-        {
-            if (Input.GetAxis("Horizontal") == 0 & Input.GetAxis("Vertical") == 0)
-            {
-                this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+    //void StopSliding()
+    //{
+    //    if (canJump == true)
+    //    {
+    //        if (Input.GetAxis("Horizontal") == 0 & Input.GetAxis("Vertical") == 0)
+    //        {
+    //            this.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
+    //        }
+    //    }
+    //}
+
+    void ChangeElement()
+    {
+        if (Input.GetButtonDown("ChangeSpell"))
+        {
+            if(actualSpell < spellName.Length-1)
+            {
+                actualSpell++;
+
+            }
+            else
+            {
+                actualSpell = 0;
+            }
+
+            for (int i = 0; i < spellList.Count; i++)
+            {
+                if (spellList[i].ReturnNameForID(actualSpell) != null)
+                {
+
+                    Debug.Log(spellList[i].ReturnNameForID(actualSpell));
+                }
             }
         }
     }

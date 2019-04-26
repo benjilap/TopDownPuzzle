@@ -8,7 +8,8 @@ public class CameraControls : MonoBehaviour {
 
     //PlayerFocus
     GameObject UiPlayer;
-    GameObject currentTarget;
+    [HideInInspector]
+    public GameObject currentTarget;
 
     //CamZoom
     float camZoom = 1;

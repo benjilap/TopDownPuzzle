@@ -24,7 +24,7 @@ public class WaterElement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(geyserState);
+        //Debug.Log(geyserState);
 		if (geyserState == 1)
         {
             GeyserWait(2, timeToStart);
@@ -56,7 +56,7 @@ public class WaterElement : MonoBehaviour {
         {
             if (geyserState == 2)
             {
-        Debug.Log(other.gameObject.name);
+        
                 other.GetComponent<Rigidbody>().AddForce(new Vector3(0, geyserForce * 1000, 0));
             }
         }
