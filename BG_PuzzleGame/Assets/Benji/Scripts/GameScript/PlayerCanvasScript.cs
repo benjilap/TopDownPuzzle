@@ -24,11 +24,12 @@ public class PlayerCanvasScript : MonoBehaviour {
 	void Update () {
         CheckPlayer();
 
-
-        UpdateSpellBarPos();
-        UpdateBarAnim();
-        UpdateBarPourcent();
-
+        if (actualPlayer != null)
+        {
+            UpdateSpellBarPos();
+            UpdateBarAnim();
+            UpdateBarPourcent();
+        }
     }
 
     void CheckPlayer()
@@ -61,7 +62,6 @@ public class PlayerCanvasScript : MonoBehaviour {
         else
         {
             spellBarInd.GetComponent<Animator>().SetBool("CastSpell", false);
-            actualPlayer.GetComponent<PlayerControls>().spellPowerPourcent = 0;
 
 
         }
