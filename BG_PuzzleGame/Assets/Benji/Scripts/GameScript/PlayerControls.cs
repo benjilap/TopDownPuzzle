@@ -212,7 +212,6 @@ public class PlayerControls : MonoBehaviour {
                     if (SpellTimer(startTimer, 0.2f))
                     {
                         startTimer = false;
-                        spellPowerPourcent = 0;
                         spellCasted = Instantiate(spellPrefab, spellSpawner.transform.position, Quaternion.identity);
                         spellCasted.transform.SetParent(spellSpawner.transform);
                         spellCasted.GetComponent<SpellInteract>().player = this.gameObject;
@@ -237,6 +236,7 @@ public class PlayerControls : MonoBehaviour {
                 {
 
                     startTimer = false;
+                    spellPowerPourcent = 0;
                     useSpellState = 2;
                 }
                 else
