@@ -236,13 +236,13 @@ public class PlayerControls : MonoBehaviour {
                 {
 
                     startTimer = false;
-                    spellPowerPourcent = 0;
                     useSpellState = 2;
                 }
                 else
                 {
                     if (useSpellState == 0)
                     {
+                        spellPowerPourcent = 0;
                         useSpellState = 1;
                     }
                     resetTimer = false;
