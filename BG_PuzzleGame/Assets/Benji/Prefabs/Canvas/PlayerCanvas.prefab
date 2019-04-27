@@ -287,6 +287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerOffset: {x: 0, y: 1, z: 0}
+  startBarPos: {x: 0, y: 0}
 --- !u!114 &114947378277814170
 MonoBehaviour:
   m_ObjectHideFlags: 1

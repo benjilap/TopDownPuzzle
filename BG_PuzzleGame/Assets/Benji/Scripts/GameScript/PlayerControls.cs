@@ -60,8 +60,10 @@ public class PlayerControls : MonoBehaviour {
     float maxSpellRange;
     float minSpellRange;
     Vector3 initScale;
+    //[HideInInspector]
+    public float spellPowerPourcent;
 
-    public string[] spellName = new string[1];
+    string[] spellName = new string[1];
     List<SpellOrder> spellList = new List<SpellOrder>();
     int actualSpell =0;
 
@@ -87,12 +89,17 @@ public class PlayerControls : MonoBehaviour {
 
         PlayerMovement();
         PlayerJump();
-        MoveAnimControl();
         if (canJump)
         {
             CastSpell();
         }
+    }
+
+    private void Update()
+    {
         ChangeElement();
+        MoveAnimControl();
+        
     }
 
     void UpdatePlayerAxis()
@@ -210,12 +217,11 @@ public class PlayerControls : MonoBehaviour {
                         launchRangeSpell = minSpellRange;
                         launchYSpellOffset = minSpellHeight;
                         initScale = spellCasted.transform.localScale;
-                        for (int i = 0; i < spellList.Count; i++)
+                        foreach (SpellOrder spellElement in spellList)
                         {
-                            if (spellList[i].ReturnNameForID(actualSpell) != null)
+                            if (spellElement.ReturnNameForID(actualSpell) != null)
                             {
-
-                                spellCasted.GetComponent<SpellInteract>().actualElement = spellList[i].ReturnNameForID(actualSpell);
+                                spellCasted.GetComponent<SpellInteract>().actualElement = spellElement.ReturnNameForID(actualSpell);
                             }
                         }
                     }
@@ -223,6 +229,7 @@ public class PlayerControls : MonoBehaviour {
                     {
                         startTimer = true;
                     }
+
                 }else
                 if (SpellTimer(startTimer, 0.3f))
                 {
@@ -271,7 +278,7 @@ public class PlayerControls : MonoBehaviour {
                 {
                     Destroy(spellCasted);
                 }
-                if (SpellTimer(resetTimer, 0.2f))
+                if (SpellTimer(resetTimer, 0.3f))
                 {
                     resetTimer = false;
                     useSpellState = 0;
@@ -298,6 +305,7 @@ public class PlayerControls : MonoBehaviour {
                         spellCasted.GetComponent<Rigidbody>().AddForce(UpdateSpellPlayerOffset());
                         spellCasted.GetComponent<Rigidbody>().useGravity = true;
                         spellCasted = null;
+                        spellPowerPourcent = 0;
 
                     }
                     useSpellState = 0;
@@ -324,6 +332,7 @@ public class PlayerControls : MonoBehaviour {
         launchRangeSpell += (((maxSpellRange - minSpellRange)/100) * Time.deltaTime) * upOffset;
         launchYSpellOffset += (((maxSpellHeight - minSpellHeight) /100)*Time.deltaTime) * upOffset;
 
+        spellPowerPourcent = Mathf.Clamp(((launchRangeSpell - minSpellRange) / (maxSpellRange - minSpellRange)) * 100, 0, 100);
 
     }
 
@@ -420,21 +429,23 @@ public class PlayerControls : MonoBehaviour {
             if(actualSpell < spellName.Length-1)
             {
                 actualSpell++;
+                Debug.Log("1");
 
             }
             else
             {
+                Debug.Log("0");
                 actualSpell = 0;
             }
 
-            for (int i = 0; i < spellList.Count; i++)
+            foreach (SpellOrder spellElement in spellList)
             {
-                if (spellList[i].ReturnNameForID(actualSpell) != null)
+                if (spellElement.ReturnNameForID(actualSpell) != null)
                 {
 
-                    Debug.Log(spellList[i].ReturnNameForID(actualSpell));
+                    Debug.Log(spellElement.ReturnNameForID(actualSpell));
                 }
-            }
+            } 
         }
     }
 

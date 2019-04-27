@@ -1952,10 +1952,9 @@ MonoBehaviour:
   playerMovement: {x: 0, y: 0, z: 0}
   spellForce: 100
   ySpellOffset: 3
-  launchYSpellOffset: 0
   rangeSpell: 5
-  launchRangeSpell: 0
   upOffset: 100
+  spellPowerPourcent: 0
 --- !u!136 &136316542776076406
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -157,16 +157,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114162542566966972, guid: 068a39bf9a4b214428bc666e8bf2664f,
-        type: 2}
-      propertyPath: zoomSpeed
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114162542566966972, guid: 068a39bf9a4b214428bc666e8bf2664f,
-        type: 2}
-      propertyPath: camSpeedX
-      value: 15
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 068a39bf9a4b214428bc666e8bf2664f, type: 2}
   m_IsPrefabAsset: 0
