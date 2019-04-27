@@ -9,13 +9,16 @@ public class LevelStart : MonoBehaviour {
     float spawnAngle;
 
     Object playerPrefab;
+    Object playerCanvas;
 
-	void Start () {
+    void Start () {
         playerPrefab = Resources.Load("Player/Player");
-	}
+        playerCanvas = Resources.Load("Player/PlayerCanvas");
+    }
 	
 	// Update is called once per frame
 	void Update () {
+        CheckPlayerCanvas();
         CheckPlayer();
 	}
 
@@ -28,6 +31,15 @@ public class LevelStart : MonoBehaviour {
             {
                 GameManager.nextLevelNum++;
             }
+        }
+    }
+
+    void CheckPlayerCanvas()
+    {
+        if (GameObject.FindObjectOfType<PlayerCanvasScript>() == null)
+        {
+            Instantiate(playerCanvas, Vector3.zero, Quaternion.identity);
+
         }
     }
 }
