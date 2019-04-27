@@ -34,7 +34,8 @@ public class PlayerControls : MonoBehaviour {
 
     [SerializeField]
     float spellForce;
-    int useSpellState;
+    [HideInInspector]
+    public int useSpellState;
     GameObject spellSpawner;
     GameObject spellPrefab;
     GameObject spellCasted;
@@ -211,6 +212,7 @@ public class PlayerControls : MonoBehaviour {
                     if (SpellTimer(startTimer, 0.2f))
                     {
                         startTimer = false;
+                        spellPowerPourcent = 0;
                         spellCasted = Instantiate(spellPrefab, spellSpawner.transform.position, Quaternion.identity);
                         spellCasted.transform.SetParent(spellSpawner.transform);
                         spellCasted.GetComponent<SpellInteract>().player = this.gameObject;
@@ -305,7 +307,6 @@ public class PlayerControls : MonoBehaviour {
                         spellCasted.GetComponent<Rigidbody>().AddForce(UpdateSpellPlayerOffset());
                         spellCasted.GetComponent<Rigidbody>().useGravity = true;
                         spellCasted = null;
-                        spellPowerPourcent = 0;
 
                     }
                     useSpellState = 0;

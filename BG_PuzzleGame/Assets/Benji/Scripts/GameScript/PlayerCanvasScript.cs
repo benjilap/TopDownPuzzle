@@ -10,7 +10,7 @@ public class PlayerCanvasScript : MonoBehaviour {
 
     GameObject spellBarInd;
     GameObject spellBarContent;
-    public Vector2 startBarPos;
+    Vector2 startBarPos;
 
     GameObject actualPlayer;
 
@@ -24,7 +24,9 @@ public class PlayerCanvasScript : MonoBehaviour {
 	void Update () {
         CheckPlayer();
 
+
         UpdateSpellBarPos();
+        UpdateBarAnim();
         UpdateBarPourcent();
 
     }
@@ -49,4 +51,20 @@ public class PlayerCanvasScript : MonoBehaviour {
         spellBarContent.GetComponent<RectTransform>().offsetMax = new Vector2(startBarPos.x-((startBarPos.x / 100) * actualPlayer.GetComponent<PlayerControls>().spellPowerPourcent), 0);
         spellBarContent.GetComponent<RectTransform>().offsetMin = new Vector2(startBarPos.x-((startBarPos.x / 100) * actualPlayer.GetComponent<PlayerControls>().spellPowerPourcent), 0);
     }
+
+    void UpdateBarAnim()
+    {
+        if (actualPlayer.GetComponent<PlayerControls>().useSpellState != 0)
+        {
+            spellBarInd.GetComponent<Animator>().SetBool("CastSpell", true);
+        }
+        else
+        {
+            spellBarInd.GetComponent<Animator>().SetBool("CastSpell", false);
+            actualPlayer.GetComponent<PlayerControls>().spellPowerPourcent = 0;
+
+
+        }
+    }
+
 }
