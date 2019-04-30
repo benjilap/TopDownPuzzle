@@ -19,7 +19,7 @@ public class WaterElement : MonoBehaviour {
     float geyserForce=1;
 
 	void Start () {
-		
+        this.GetComponent<BoxCollider>().enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -31,7 +31,13 @@ public class WaterElement : MonoBehaviour {
         }else 
         if (geyserState == 2)
         {
+            this.GetComponent<BoxCollider>().enabled = true;
             GeyserWait(0, timeToBeActive);
+        }
+        else
+        {
+            this.GetComponent<BoxCollider>().enabled = false;
+
         }
 	}
 

@@ -68,6 +68,9 @@ public class PlayerControls : MonoBehaviour {
     List<SpellOrder> spellList = new List<SpellOrder>();
     int actualSpell =0;
 
+    [HideInInspector]
+    public bool isDead;
+
     void Start()
     {
         myPivotCamera = GameObject.FindObjectOfType<CameraControls>().gameObject;
@@ -100,7 +103,7 @@ public class PlayerControls : MonoBehaviour {
     {
         ChangeElement();
         MoveAnimControl();
-        
+        PlayerDeath();
     }
 
     void UpdatePlayerAxis()
@@ -173,22 +176,25 @@ public class PlayerControls : MonoBehaviour {
         RaycastHit wallDetect;
         if (Physics.Raycast(this.transform.position, Vector3.down + playerDirNorm * 0.05f, out jumpDetect, 0.9f))
         {
-            canJump = true;
-            hasJump = false;
-
-            if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.4f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f))
+            if (jumpDetect.collider.gameObject.tag != "Lava" || jumpDetect.collider.gameObject.tag != "Water" || jumpDetect.collider.gameObject.tag != "Deathzone")
             {
+                canJump = true;
+                hasJump = false;
 
-                if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
+                if (!Physics.Raycast(this.transform.position + new Vector3(0, -0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.4f) & !Physics.Raycast(this.transform.position + new Vector3(0, 0.4f, 0), playerDirNorm, out wallDetect, tempPlayerDir.magnitude * 0.5f))
                 {
-                    if (Input.GetButtonDown("Jump") && useSpellState==0)
+
+                    if (this.GetComponent<Rigidbody>().velocity.y > -0.6f && this.GetComponent<Rigidbody>().velocity.y < 0.6f)
                     {
-                        hasJump = true;
-                        this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
+                        if (Input.GetButtonDown("Jump") && useSpellState == 0)
+                        {
+                            hasJump = true;
+                            this.GetComponent<Rigidbody>().AddForce(new Vector3(0, 500, 0) * jumpForce);
+                        }
+
                     }
 
                 }
-
             }
 
         }
@@ -430,12 +436,12 @@ public class PlayerControls : MonoBehaviour {
             if(actualSpell < spellName.Length-1)
             {
                 actualSpell++;
-                Debug.Log("1");
+
 
             }
             else
             {
-                Debug.Log("0");
+
                 actualSpell = 0;
             }
 
@@ -450,6 +456,23 @@ public class PlayerControls : MonoBehaviour {
         }
     }
 
+    void PlayerDeath()
+    {
+        Debug.DrawLine(transform.position, transform.position+Vector3.down*0.9f, Color.yellow);
+
+        RaycastHit DeathZoneHit;
+        if (Physics.Raycast(this.transform.position, Vector3.down, out DeathZoneHit, 0.9f))
+        {
+            Debug.Log(DeathZoneHit.collider.tag);
+
+            if (DeathZoneHit.collider.tag == "Deathzone")
+            {
+                Debug.Log("Dead");
+                isDead = true;
+                Destroy(this.gameObject, 1);
+            }
+        }
+    }
 
     Vector3 ScalePlayerMove(Vector3 currentPlayerDir)
     {

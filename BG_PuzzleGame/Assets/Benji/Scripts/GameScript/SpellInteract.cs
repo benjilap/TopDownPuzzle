@@ -21,38 +21,48 @@ public class SpellInteract : MonoBehaviour {
     void CheckCollision()
     {
         RaycastHit ObstacleCollide;
-        if (Physics.Raycast(transform.position, this.GetComponent<Rigidbody>().velocity, out ObstacleCollide, 0.2f)){
-            if(ObstacleCollide.transform.gameObject.tag != "Player")
+        if (Physics.Raycast(transform.position, this.GetComponent<Rigidbody>().velocity, out ObstacleCollide, 0.2f))
+        {
+            if (ObstacleCollide.transform.gameObject.tag != "Player")
             {
-                if (actualElement == "Water")
+                if (ObstacleCollide.collider.gameObject.transform.parent != null)
                 {
-
-                    if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>() != null)
+                    if (actualElement == "Water")
                     {
-                        ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().hittedState = 1;
-                        if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().resetLava)
+                        Debug.Log(ObstacleCollide.collider.gameObject);
+
+                        if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>() != null)
                         {
-                            ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().resetLava = false;
+                            ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().hittedState = 1;
+                            if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().resetLava)
+                            {
+                                ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().resetLava = false;
+                            }
                         }
                     }
-                }
 
-                if (actualElement == "Fire")
-                {
 
-                    if (ObstacleCollide.collider.gameObject.transform.GetComponent<WaterElement>() != null)
+                    if (actualElement == "Fire")
                     {
-                        ObstacleCollide.collider.gameObject.transform.GetComponent<WaterElement>().geyserState = 1;
 
+                        if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<WaterElement>() != null)
+                        {
+                            ObstacleCollide.collider.gameObject.transform.parent.GetComponent<WaterElement>().geyserState = 1;
+
+                        }
+                    }
+
+                    if (ObstacleCollide.transform.gameObject.tag != "Water")
+                    {
+                        Destroy(this.gameObject);
                     }
                 }
-                Destroy(this.gameObject);
-            }
-            else
-            {
+                else
+                {
+
+                }
 
             }
-
         }
     }
 
@@ -60,7 +70,7 @@ public class SpellInteract : MonoBehaviour {
     {
         if (player != null)
         {
-            if (Vector3.Distance(this.transform.position, player.transform.position) > 1000)
+            if (Vector3.Distance(this.transform.position, player.transform.position) > 500)
             {
                 Destroy(this.gameObject);
             }

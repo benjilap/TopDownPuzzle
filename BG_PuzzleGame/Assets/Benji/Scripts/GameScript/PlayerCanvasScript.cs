@@ -29,6 +29,7 @@ public class PlayerCanvasScript : MonoBehaviour {
             UpdateSpellBarPos();
             UpdateBarAnim();
             UpdateBarPourcent();
+            CheckPlayerDeath();
         }
     }
 
@@ -62,9 +63,14 @@ public class PlayerCanvasScript : MonoBehaviour {
         else
         {
             spellBarInd.GetComponent<Animator>().SetBool("CastSpell", false);
-
-
         }
+    }
+
+    void CheckPlayerDeath()
+    {
+
+            this.transform.Find("DeathScreen").GetComponent<Animator>().SetBool("PlayerDeath", actualPlayer.GetComponent<PlayerControls>().isDead);
+
     }
 
 }

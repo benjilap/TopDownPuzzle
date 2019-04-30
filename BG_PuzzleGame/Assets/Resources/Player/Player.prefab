@@ -1951,6 +1951,7 @@ MonoBehaviour:
   canMove: 1
   playerMovement: {x: 0, y: 0, z: 0}
   spellForce: 100
+  useSpellState: 0
   ySpellOffset: 3
   rangeSpell: 5
   upOffset: 100
