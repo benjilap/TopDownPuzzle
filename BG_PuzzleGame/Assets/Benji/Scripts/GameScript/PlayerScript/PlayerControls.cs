@@ -70,6 +70,9 @@ public class PlayerControls : MonoBehaviour {
 
     [HideInInspector]
     public bool isDead;
+    [HideInInspector]
+    public bool playerEnable;
+
 
     void Start()
     {
@@ -89,21 +92,27 @@ public class PlayerControls : MonoBehaviour {
     }
 	
 	void FixedUpdate () {
-        UpdatePlayerAxis();
-
-        PlayerMovement();
-        PlayerJump();
-        if (canJump)
+        if (playerEnable)
         {
-            CastSpell();
+            UpdatePlayerAxis();
+
+            PlayerMovement();
+            PlayerJump();
+            if (canJump)
+            {
+                CastSpell();
+            }
         }
     }
 
     private void Update()
     {
-        ChangeElement();
-        MoveAnimControl();
-        PlayerDeath();
+        if (playerEnable)
+        {
+            ChangeElement();
+            MoveAnimControl();
+            PlayerDeath();
+        }
     }
 
     void UpdatePlayerAxis()
@@ -458,19 +467,26 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerDeath()
     {
-        Debug.DrawLine(transform.position, transform.position+Vector3.down*0.9f, Color.yellow);
 
         RaycastHit DeathZoneHit;
         if (Physics.Raycast(this.transform.position, Vector3.down, out DeathZoneHit, 0.9f))
         {
-            Debug.Log(DeathZoneHit.collider.tag);
+
 
             if (DeathZoneHit.collider.tag == "Deathzone")
             {
-                Debug.Log("Dead");
                 isDead = true;
                 Destroy(this.gameObject, 1);
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == "Deathzone")
+        {
+            isDead = true;
+            Destroy(this.gameObject, 1);
         }
     }
 

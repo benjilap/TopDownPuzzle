@@ -50,6 +50,12 @@ public class SpellInteract : MonoBehaviour {
                             ObstacleCollide.collider.gameObject.transform.parent.GetComponent<WaterElement>().geyserState = 1;
 
                         }
+
+                        if (ObstacleCollide.collider.GetComponent<Torch>() != null)
+                        {
+                            
+                            ObstacleCollide.collider.GetComponent<Torch>().lighted = true;
+                        }
                     }
 
                     if (ObstacleCollide.transform.gameObject.tag != "Water")
