@@ -10,14 +10,17 @@ public class LevelStart : MonoBehaviour {
 
     Object playerPrefab;
     Object playerCanvas;
+    Object pauseCanvas;
 
     void Start () {
         playerPrefab = Resources.Load("Player/Player");
         playerCanvas = Resources.Load("Player/PlayerCanvas");
+        pauseCanvas = Resources.Load("Menu/PauseCanvas");
     }
 	
 	// Update is called once per frame
 	void Update () {
+        CheckPauseCanvas();
         CheckPlayerCanvas();
         CheckPlayer();
 	}
@@ -41,5 +44,15 @@ public class LevelStart : MonoBehaviour {
             Instantiate(playerCanvas, Vector3.zero, Quaternion.identity);
 
         }
+    }
+
+    void CheckPauseCanvas()
+    {
+        if (GameObject.FindObjectOfType<PauseCanvasScript>() == null)
+        {
+            Instantiate(pauseCanvas, Vector3.zero, Quaternion.identity);
+
+        }
+
     }
 }
