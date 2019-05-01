@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 33045129502846214}
   - component: {fileID: 23374860718699812}
   m_Layer: 0
-  m_Name: stair_damaged
+  m_Name: stair_damaged_canyon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +51,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1014814134762936}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.25, y: 3, z: 8.853458}
+  m_LocalPosition: {x: 5.8607707, y: 1.54, z: -16.091276}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4842917472451674}
@@ -86,7 +86,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 83fc0952b9bcb0646b7f1652f8422077, type: 2}
+  - {fileID: 2100000, guid: 6ef1eeac23767a2448ea0706ccbf29df, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
