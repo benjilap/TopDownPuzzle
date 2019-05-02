@@ -179,7 +179,7 @@ public class PlayerControls : MonoBehaviour {
     void PlayerJump()
     {
 
-        Debug.DrawRay(this.transform.position, Vector3.down * 0.9f + playerDirNorm * 0.05f, Color.green);
+        //Debug.DrawRay(this.transform.position, Vector3.down * 0.9f + playerDirNorm * 0.05f, Color.green);
 
         RaycastHit jumpDetect;
         RaycastHit wallDetect;
@@ -473,7 +473,7 @@ public class PlayerControls : MonoBehaviour {
 
     void PlayerDeath()
     {
-
+        Debug.DrawLine(this.transform.position, this.transform.position + Vector3.down * 0.8f, Color.yellow);
         RaycastHit DeathZoneHit;
         if (Physics.Raycast(this.transform.position, Vector3.down, out DeathZoneHit, 0.5f))
         {
@@ -487,9 +487,9 @@ public class PlayerControls : MonoBehaviour {
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        if (collision.collider.tag == "Deathzone")
+        if (collider.tag == "Deathzone")
         {
             isDead = true;
             Destroy(this.gameObject, 1);

@@ -34,11 +34,12 @@ public class WaterElement : MonoBehaviour {
             this.GetComponent<BoxCollider>().enabled = true;
             GeyserWait(0, timeToBeActive);
         }
-        else
+        else if (geyserState == 0)
         {
             this.GetComponent<BoxCollider>().enabled = false;
 
         }
+        FXActive();
 	}
 
     void GeyserWait(int newGeyserState, float timeToWait)
@@ -53,6 +54,24 @@ public class WaterElement : MonoBehaviour {
         {
             geyserState = newGeyserState;
             geyserStart = false;
+        }
+    }
+
+    void FXActive()
+    {
+        if(geyserState != 0)
+        {
+            if (this.transform.GetChild(geyserState).GetComponent<ParticleSystem>().isStopped)
+            {
+            this.transform.GetChild(geyserState).GetComponent<ParticleSystem>().Play();
+
+            }
+        }
+        else
+        {
+            this.transform.GetChild(1).GetComponent<ParticleSystem>().Stop();
+            this.transform.GetChild(2).GetComponent<ParticleSystem>().Stop();
+
         }
     }
 
