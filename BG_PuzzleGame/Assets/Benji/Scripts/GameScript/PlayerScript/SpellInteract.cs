@@ -31,12 +31,12 @@ public class SpellInteract : MonoBehaviour {
                     {
                         Debug.Log(ObstacleCollide.collider.gameObject);
 
-                        if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>() != null)
+                        if (ObstacleCollide.collider.gameObject.transform.parent.parent.GetComponent<LavaElement>() != null)
                         {
-                            ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().hittedState = 1;
-                            if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().resetLava)
+                            ObstacleCollide.collider.gameObject.transform.parent.parent.GetComponent<LavaElement>().hittedState = 1;
+                            if (ObstacleCollide.collider.gameObject.transform.parent.parent.GetComponent<LavaElement>().resetLava)
                             {
-                                ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().resetLava = false;
+                                ObstacleCollide.collider.gameObject.transform.parent.parent.GetComponent<LavaElement>().resetLava = false;
                             }
                         }
                     }
@@ -99,7 +99,7 @@ public class SpellInteract : MonoBehaviour {
             Object ElementFX = Resources.Load("FX/FX_" + actualElement + "_Spell");
             GameObject SpellFX = Instantiate(ElementFX, this.transform.position, Quaternion.identity) as GameObject;
             SpellFX.transform.SetParent(this.transform);
-            SpellFX.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            SpellFX.transform.GetChild(0).localScale = new Vector3(0.5f, 0.5f, 0.5f);
         }
     }
 }
