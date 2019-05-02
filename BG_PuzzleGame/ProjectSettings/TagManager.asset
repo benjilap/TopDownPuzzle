@@ -8,6 +8,7 @@ TagManager:
   - Lava
   - Deathzone
   - Obsidian
+  - EndCanvas
   layers:
   - Default
   - TransparentFX

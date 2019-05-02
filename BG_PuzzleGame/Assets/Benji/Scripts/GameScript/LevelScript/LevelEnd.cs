@@ -34,8 +34,16 @@ public class LevelEnd : MonoBehaviour {
             if (Vector3.Distance(transform.position + new Vector3(0, 1, 0), myPlayer.transform.position) < 0.1f)
             {
                 GameManager.levelNum++;
-                SceneManager.LoadScene("Level" + GameManager.nextLevelNum);
-                
+                if (Application.CanStreamedLevelBeLoaded("sceneName"))
+                {
+
+                    SceneManager.LoadScene("Level" + GameManager.nextLevelNum);
+                }
+                else
+                {
+                    GameObject.FindGameObjectWithTag("EndCanvas").transform.GetChild(0).GetComponent<Animator>().SetBool("EndGame",true);
+                }
+
             }
         }
     }

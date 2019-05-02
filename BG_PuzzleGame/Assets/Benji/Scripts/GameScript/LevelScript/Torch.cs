@@ -12,10 +12,12 @@ public class Torch : MonoBehaviour {
     float saveTime;
 
     ParticleSystem Fire;
+    GameObject fireLight;
 
     private void Start()
     {
-        Fire = this.transform.GetChild(0).GetComponent<ParticleSystem>();
+        fireLight = this.transform.GetChild(2).gameObject;
+        Fire = this.transform.GetChild(1).GetComponent<ParticleSystem>();
     }
 
     private void Update()
@@ -28,6 +30,7 @@ public class Torch : MonoBehaviour {
         if (lighted)
         {
             Fire.Play();
+            fireLight.SetActive(true);
         }
 
     }
@@ -46,6 +49,8 @@ public class Torch : MonoBehaviour {
                 beEnlighted = false;
                 lighted = false;
                 Fire.Stop();
+                fireLight.SetActive(false);
+
             }
         }
     }
