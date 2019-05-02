@@ -454,12 +454,18 @@ public class PlayerControls : MonoBehaviour {
                 actualSpell = 0;
             }
 
-            foreach (SpellOrder spellElement in spellList)
+            for(int i = 0; i<spellList.Count;i++)
             {
-                if (spellElement.ReturnNameForID(actualSpell) != null)
+                if (spellList[i].ReturnNameForID(actualSpell) != null)
                 {
 
-                    Debug.Log(spellElement.ReturnNameForID(actualSpell));
+                    Debug.Log(spellList[i].ReturnNameForID(actualSpell));
+                    charAtor.transform.Find("Root/Hips/SM_Prop_SpellBook_03/FX_" + spellList[i].ReturnNameForID(actualSpell) + "_Spell").gameObject.SetActive(true);
+
+                }
+                else
+                {
+                    charAtor.transform.Find("Root/Hips/SM_Prop_SpellBook_03/FX_" + spellList[i].ReturnName()+ "_Spell").gameObject.SetActive(false);
                 }
             } 
         }
@@ -531,6 +537,11 @@ public class SpellOrder
     {
         spellName = newSpellName;
         spellID = newSpellID;
+    }
+
+    public string ReturnName()
+    {
+        return spellName;
     }
 
     public string ReturnNameForID(int actualSpell)
