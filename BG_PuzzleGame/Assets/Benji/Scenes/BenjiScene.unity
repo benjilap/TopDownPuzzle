@@ -173,7 +173,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4715783540687070, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.019000053
+      value: 0.062
       objectReference: {fileID: 0}
     - target: {fileID: 4715783540687070, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
       propertyPath: m_LocalPosition.z
@@ -202,70 +202,6 @@ Prefab:
     - target: {fileID: 1009528418703326, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
       propertyPath: m_Name
       value: WaterToGeyser (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4140844948692296, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4021384218133408, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4140844948692296, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4021384218133408, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4140844948692296, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4021384218133408, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 198499326050441988, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d,
-        type: 2}
-      propertyPath: ColorModule.gradient.maxGradient.atime0
-      value: 38550
-      objectReference: {fileID: 0}
-    - target: {fileID: 198499326050441988, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d,
-        type: 2}
-      propertyPath: ShapeModule.length
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 198499326050441988, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d,
-        type: 2}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 198499326050441988, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d,
-        type: 2}
-      propertyPath: InitialModule.gravityModifier.scalar
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 198499326050441988, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d,
-        type: 2}
-      propertyPath: InitialModule.startLifetime.scalar
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 198499326050441988, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d,
-        type: 2}
-      propertyPath: ShapeModule.angle
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 23529048883524966, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: aa18a9a0a81e6c54e9fe933a735792fc, type: 2}
-    - target: {fileID: 198034657004092696, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d,
-        type: 2}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
