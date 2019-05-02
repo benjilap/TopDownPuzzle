@@ -9,6 +9,8 @@ public class SpellInteract : MonoBehaviour {
     [HideInInspector]
     public string actualElement;
 
+    Object ImpactFX;
+
     void Start () {
         InstantiateFX();
 	}
@@ -70,6 +72,7 @@ public class SpellInteract : MonoBehaviour {
 
                     if (ObstacleCollide.transform.gameObject.tag != "Water")
                     {
+                        GameObject SpellImpact = Instantiate(ImpactFX, this.transform.position, Quaternion.identity) as GameObject;
                         Destroy(this.gameObject,0.5f);
                     }
                 }
@@ -110,6 +113,10 @@ public class SpellInteract : MonoBehaviour {
             GameObject SpellFX = Instantiate(ElementFX, this.transform.position, Quaternion.identity) as GameObject;
             SpellFX.transform.SetParent(this.transform);
             SpellFX.transform.GetChild(0).localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }
+        if (Resources.Load("FX/FX_" + actualElement + "_Impact") != null)
+        {
+            ImpactFX = Resources.Load("FX/FX_" + actualElement + "_Impact");
         }
     }
 }
