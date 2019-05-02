@@ -469,7 +469,7 @@ public class PlayerControls : MonoBehaviour {
     {
 
         RaycastHit DeathZoneHit;
-        if (Physics.Raycast(this.transform.position, Vector3.down, out DeathZoneHit, 0.9f))
+        if (Physics.Raycast(this.transform.position, Vector3.down, out DeathZoneHit, 0.5f))
         {
 
 
