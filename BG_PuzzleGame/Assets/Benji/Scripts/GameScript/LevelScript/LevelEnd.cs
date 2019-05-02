@@ -26,12 +26,12 @@ public class LevelEnd : MonoBehaviour {
             {
                 startLerp = true;
                 saveTime = Time.time;
-                myPlayer.transform.parent.GetComponent<PlayerControls>().canMove=false;
-                startPos = myPlayer.transform.parent.position;
+                myPlayer.transform.GetComponent<PlayerControls>().canMove=false;
+                startPos = myPlayer.transform.position;
             }
             timeVar = Time.time - saveTime;
-            myPlayer.transform.parent.position = Vector3.Lerp(startPos + myPlayer.transform.parent.GetComponent<PlayerControls>().playerMovement, transform.position + new Vector3(0, 1, 0), timeVar*2.5f);
-            if (Vector3.Distance(transform.position + new Vector3(0, 1, 0), myPlayer.transform.parent.position) < 0.1f)
+            myPlayer.transform.position = Vector3.Lerp(startPos + myPlayer.transform.GetComponent<PlayerControls>().playerMovement, transform.position + new Vector3(0, 1, 0), timeVar*2.5f);
+            if (Vector3.Distance(transform.position + new Vector3(0, 1, 0), myPlayer.transform.position) < 0.1f)
             {
                 GameManager.levelNum++;
                 SceneManager.LoadScene("Level" + GameManager.nextLevelNum);

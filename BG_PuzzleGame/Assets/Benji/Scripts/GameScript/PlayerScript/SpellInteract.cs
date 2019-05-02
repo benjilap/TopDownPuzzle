@@ -10,7 +10,7 @@ public class SpellInteract : MonoBehaviour {
     public string actualElement;
 
     void Start () {
-
+        InstantiateFX();
 	}
 	
 	// Update is called once per frame
@@ -60,7 +60,7 @@ public class SpellInteract : MonoBehaviour {
 
                     if (ObstacleCollide.transform.gameObject.tag != "Water")
                     {
-                        Destroy(this.gameObject);
+                        Destroy(this.gameObject,0.5f);
                     }
                 }
                 else
@@ -78,7 +78,7 @@ public class SpellInteract : MonoBehaviour {
         {
             if (Vector3.Distance(this.transform.position, player.transform.position) > 500)
             {
-                Destroy(this.gameObject);
+                Destroy(this.gameObject,0.5f);
             }
         }
         else
@@ -90,5 +90,16 @@ public class SpellInteract : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+    }
+
+    void InstantiateFX()
+    {
+        if (Resources.Load("FX/FX_" + actualElement + "_Spell") != null)
+        {
+            Object ElementFX = Resources.Load("FX/FX_" + actualElement + "_Spell");
+            GameObject SpellFX = Instantiate(ElementFX, this.transform.position, Quaternion.identity) as GameObject;
+            SpellFX.transform.SetParent(this.transform);
+            SpellFX.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+        }
     }
 }

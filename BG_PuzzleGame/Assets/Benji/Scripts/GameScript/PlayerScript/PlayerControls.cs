@@ -224,7 +224,7 @@ public class PlayerControls : MonoBehaviour {
             {
                 if (useSpellState == 2)
                 {
-                    if (SpellTimer(startTimer, 0.2f))
+                    if (SpellTimer(startTimer, 0.1f))
                     {
                         startTimer = false;
                         spellCasted = Instantiate(spellPrefab, spellSpawner.transform.position, Quaternion.identity);
@@ -247,7 +247,7 @@ public class PlayerControls : MonoBehaviour {
                     }
 
                 }else
-                if (SpellTimer(startTimer, 0.3f))
+                if (SpellTimer(startTimer, 0.2f))
                 {
 
                     startTimer = false;
@@ -295,7 +295,7 @@ public class PlayerControls : MonoBehaviour {
                 {
                     Destroy(spellCasted);
                 }
-                if (SpellTimer(resetTimer, 0.3f))
+                if (SpellTimer(resetTimer, 0.2f))
                 {
                     resetTimer = false;
                     useSpellState = 0;
@@ -314,7 +314,7 @@ public class PlayerControls : MonoBehaviour {
                     useSpellState = 3;
                 }
 
-                if (SpellTimer(launchSpellTimer, 0.4f))
+                if (SpellTimer(launchSpellTimer, 0.3f))
                 {
                     if (spellCasted != null)
                     {
