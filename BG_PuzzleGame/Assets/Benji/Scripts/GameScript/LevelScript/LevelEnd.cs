@@ -34,7 +34,7 @@ public class LevelEnd : MonoBehaviour {
             if (Vector3.Distance(transform.position + new Vector3(0, 1, 0), myPlayer.transform.position) < 0.1f)
             {
                 GameManager.levelNum++;
-                if (Application.CanStreamedLevelBeLoaded("sceneName"))
+                if (Application.CanStreamedLevelBeLoaded("Level" + GameManager.nextLevelNum))
                 {
 
                     SceneManager.LoadScene("Level" + GameManager.nextLevelNum);
