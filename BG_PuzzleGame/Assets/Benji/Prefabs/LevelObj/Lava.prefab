@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 65865031493575446}
   m_Layer: 0
   m_Name: Obsidian_Object
-  m_TagString: Untagged
+  m_TagString: Obsidian
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -183,7 +183,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1795378479502862}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.727063, y: 7.939, z: -14.421}
+  m_LocalPosition: {x: -5.66, y: 0, z: 3.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4781700770956994}

@@ -31,12 +31,22 @@ public class SpellInteract : MonoBehaviour {
                     {
                         Debug.Log(ObstacleCollide.collider.gameObject);
 
-                        if (ObstacleCollide.collider.gameObject.transform.parent.parent.GetComponent<LavaElement>() != null)
+                        if (ObstacleCollide.collider.gameObject.transform.parent != null & ObstacleCollide.collider.gameObject.transform.parent.parent != null)
                         {
-                            ObstacleCollide.collider.gameObject.transform.parent.parent.GetComponent<LavaElement>().hittedState = 1;
-                            if (ObstacleCollide.collider.gameObject.transform.parent.parent.GetComponent<LavaElement>().resetLava)
+                            if (ObstacleCollide.collider.gameObject.transform.parent.parent.GetComponent<LavaElement>() != null || ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>() != null)
                             {
-                                ObstacleCollide.collider.gameObject.transform.parent.parent.GetComponent<LavaElement>().resetLava = false;
+                                if (ObstacleCollide.transform.gameObject.tag != "Obsidian")
+                                {
+
+                                    ObstacleCollide.collider.gameObject.transform.parent.parent.GetComponent<LavaElement>().hittedState = 1;
+
+                                }
+                                else
+
+                                if (ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().resetLava)
+                                {
+                                    ObstacleCollide.collider.gameObject.transform.parent.GetComponent<LavaElement>().resetLava = false;
+                                }
                             }
                         }
                     }

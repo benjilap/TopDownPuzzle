@@ -7,6 +7,7 @@ TagManager:
   - Water
   - Lava
   - Deathzone
+  - Obsidian
   layers:
   - Default
   - TransparentFX
