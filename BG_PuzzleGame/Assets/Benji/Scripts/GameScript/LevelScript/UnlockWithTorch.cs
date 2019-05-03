@@ -9,9 +9,17 @@ public class UnlockWithTorch : MonoBehaviour {
     [SerializeField]
     TorchsSystem TorchesActivated;
 
-	void Start () {
-		
-	}
+    void Start()
+    {
+        if (functionToUse == 1)
+        {
+            this.transform.GetChild(1).gameObject.SetActive(false);
+            if (this.transform.GetComponent<LevelEnd>() != null)
+            {
+                this.transform.GetComponent<LevelEnd>().enabled = false;
+            }
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -22,7 +30,7 @@ public class UnlockWithTorch : MonoBehaviour {
                 UseAtor();
             }
             else
-        if (functionToUse == 1)
+            if (functionToUse == 1)
             {
                 EnableEndLevel();
             }
@@ -36,6 +44,8 @@ public class UnlockWithTorch : MonoBehaviour {
 
     void EnableEndLevel()
     {
+        this.transform.GetComponent<LevelEnd>().enabled = true;
+
         this.transform.GetChild(1).gameObject.SetActive(true);
     }
 

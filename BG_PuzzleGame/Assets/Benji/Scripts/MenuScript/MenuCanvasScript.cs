@@ -17,9 +17,10 @@ public class MenuCanvasScript : MonoBehaviour {
             Application.Quit();
         }else
         {
-            SceneManager.LoadScene("Level" + levelNum.ToString());
-            GameManager.levelNum = GameManager.startLevelNum;
+
+            GameManager.levelNum = levelNum;
             GameManager.nextLevelNum = GameManager.levelNum + 1;
+            SceneManager.LoadScene("Level" + levelNum.ToString());
         }
     }
 }
