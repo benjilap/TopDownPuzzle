@@ -50,10 +50,8 @@ public class PauseCanvasScript : MonoBehaviour {
     public void RestartLevel(GameObject button)
     {
 
-        GameObject.FindObjectOfType<PlayerControls>().isDead = true;
-        Destroy(GameObject.FindObjectOfType<PlayerControls>().gameObject,1);
-        button.GetComponent<Animator>().SetBool("Normal", true);
-        ChangePauseState();
+        SceneManager.LoadScene("Level"+GameManager.levelNum);
+
     }
 
     public void LoadMenu()

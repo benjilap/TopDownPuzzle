@@ -36,7 +36,7 @@ public class UnlockWithTorch : MonoBehaviour {
 
     void EnableEndLevel()
     {
-        this.enabled = true;
+        this.transform.GetChild(1).gameObject.SetActive(true);
     }
 
 }

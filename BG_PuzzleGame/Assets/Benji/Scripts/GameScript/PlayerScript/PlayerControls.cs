@@ -110,9 +110,9 @@ public class PlayerControls : MonoBehaviour {
         if (playerEnable)
         {
             ChangeElement();
-            MoveAnimControl();
             //PlayerDeath();
         }
+            MoveAnimControl();
     }
 
     void UpdatePlayerAxis()
