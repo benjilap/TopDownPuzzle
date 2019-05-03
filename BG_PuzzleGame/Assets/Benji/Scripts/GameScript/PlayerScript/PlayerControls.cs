@@ -482,7 +482,7 @@ public class PlayerControls : MonoBehaviour {
             if (DeathZoneHit.collider.tag == "Deathzone")
             {
                 isDead = true;
-                Destroy(this.gameObject, 1);
+                Destroy(this.gameObject, 0.5f);
             }
         }
     }
@@ -492,7 +492,7 @@ public class PlayerControls : MonoBehaviour {
         if (collider.tag == "Deathzone")
         {
             isDead = true;
-            Destroy(this.gameObject, 1);
+            Destroy(this.gameObject, 0.5f);
         }
     }
 

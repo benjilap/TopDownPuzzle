@@ -203,6 +203,11 @@ Prefab:
       propertyPath: m_Name
       value: WaterToGeyser (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 23638101730260848, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ca307c9e2c31814e8cfb80dd2c09b8d, type: 2}
   m_IsPrefabAsset: 0
@@ -244,6 +249,11 @@ Prefab:
     - target: {fileID: 4212148002654682, guid: 068a39bf9a4b214428bc666e8bf2664f, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224390860031348556, guid: 068a39bf9a4b214428bc666e8bf2664f,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 068a39bf9a4b214428bc666e8bf2664f, type: 2}

@@ -81,8 +81,7 @@ public class WaterElement : MonoBehaviour {
         {
             if (geyserState == 2)
             {
-        
-                other.GetComponent<Rigidbody>().AddForce(new Vector3(0, geyserForce * 1000, 0));
+                other.GetComponent<Rigidbody>().AddForce(new Vector3(0, geyserForce * 100, 0),ForceMode.Acceleration);
             }
         }
     }

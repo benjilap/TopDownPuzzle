@@ -2208,7 +2208,7 @@ MonoBehaviour:
   useSpellState: 0
   ySpellOffset: 3
   rangeSpell: 5
-  upOffset: 100
+  upOffset: 150
   spellPowerPourcent: 0
   isDead: 0
   playerEnable: 0

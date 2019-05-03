@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 65985420989507964}
   m_Layer: 0
   m_Name: WaterTrigger
-  m_TagString: Deathzone
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,7 +128,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1009528418703326}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.197069, y: 0.062, z: -1.5659474}
+  m_LocalPosition: {x: -5.47, y: -5.68, z: 5.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4599451917148246}
