@@ -6,6 +6,7 @@ public class LevelStart : MonoBehaviour {
 
     [SerializeField]
     Vector3 spawnPos;
+    [SerializeField]
     float spawnAngle;
 
     Object playerPrefab;

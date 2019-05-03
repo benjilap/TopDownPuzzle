@@ -111,7 +111,7 @@ public class PlayerControls : MonoBehaviour {
         {
             ChangeElement();
             MoveAnimControl();
-            PlayerDeath();
+            //PlayerDeath();
         }
     }
 
